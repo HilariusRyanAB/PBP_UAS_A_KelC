@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_peminjaman">
+
+    <fragment
+        android:id="@+id/navigation_peminjaman"
+        android:name="com.kelompokc.tubes.ui.peminjaman.PeminjamanFragment"
+        android:label="@string/peminjaman"
+        tools:layout="@layout/fragment_peminjaman" />
+
+    <fragment
+        android:id="@+id/navigation_pengembalian"
+        android:name="com.kelompokc.tubes.ui.pengembalian.PengembalianFragment"
+        android:label="@string/pengembalian"
+        tools:layout="@layout/fragment_pengembalian" />
+
+    <fragment
+        android:id="@+id/navigation_donasi"
+        android:name="com.kelompokc.tubes.ui.donasi.DonasiFragment"
+        android:label="@string/donasi"
+        tools:layout="@layout/fragment_donasi" />
+</navigation>

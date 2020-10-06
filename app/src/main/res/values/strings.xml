@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Tubes</string>
+    <string name="peminjaman">Peminjaman</string>
+    <string name="pengembalian">Pengembalian</string>
+    <string name="donasi">Donasi</string>
+    <string name="judul_buku">Judul Buku:</string>
+    <string name="genre_buku">Genre Buku:</string>
+    <string name="nomor_seri_buku">Nomor Seri Buku:</string>
+</resources>
