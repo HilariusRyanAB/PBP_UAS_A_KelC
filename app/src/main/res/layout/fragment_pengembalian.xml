@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Daftar Buku yang Sedang Dipinjam"
         android:textAlignment="center"
+        android:layout_marginTop="20dp"
         android:textSize="22dp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintTop_toTopOf="parent" />

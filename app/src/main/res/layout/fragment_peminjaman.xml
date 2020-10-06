@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Daftar Buku yang Bisa Dipinjam"
         android:textAlignment="center"
+        android:layout_marginTop="20dp"
         android:textSize="22dp"
         app:layout_constraintBottom_toTopOf="@+id/recycler_view_peminjaman"
         app:layout_constraintHorizontal_bias="0.0"

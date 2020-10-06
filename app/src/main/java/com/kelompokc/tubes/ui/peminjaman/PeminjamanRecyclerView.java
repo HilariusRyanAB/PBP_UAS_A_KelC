@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 
@@ -35,7 +37,7 @@ public class PeminjamanRecyclerView extends RecyclerView.Adapter<PeminjamanRecyc
     {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.adapter_recycler_view, parent, false);
-        return new MyViewHolder(binding);
+        return new MyViewHolder(binding.getRoot());
     }
 
     @Override
@@ -43,6 +45,22 @@ public class PeminjamanRecyclerView extends RecyclerView.Adapter<PeminjamanRecyc
     {
         final Peminjaman peminjaman = result.get(position);
         binding.setPeminjaman(peminjaman);
+        holder.itemCard.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                holder.itemCard.setChecked(!holder.itemCard.isChecked());
+                if(holder.itemCard.isChecked()==true)
+                {
+                    Toast.makeText(view.getContext(),"Pinjam: "+result.get(holder.getAdapterPosition()).getJudul(), Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(view.getContext(),"Batal Pinjam: "+result.get(holder.getAdapterPosition()).getJudul(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -54,11 +72,12 @@ public class PeminjamanRecyclerView extends RecyclerView.Adapter<PeminjamanRecyc
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         private final AdapterRecyclerViewBinding binding;
-
-        public MyViewHolder(@NonNull AdapterRecyclerViewBinding binding)
+        private MaterialCardView itemCard;
+        public MyViewHolder(@NonNull View itemView)
         {
-            super(binding.getRoot());
-            this.binding = binding;
+            super(itemView);
+            binding = DataBindingUtil.bind(itemView);
+            itemCard = itemView.findViewById(R.id.item_pinjam);
         }
         public void onClick(View view)
         {
