@@ -2,8 +2,8 @@
     <string name="app_name">Tubes</string>
     <string name="peminjaman">Peminjaman</string>
     <string name="pengembalian">Pengembalian</string>
-    <string name="donasi">Donasi</string>
-    <string name="judul_buku">Judul Buku:</string>
-    <string name="genre_buku">Genre Buku:</string>
-    <string name="nomor_seri_buku">Nomor Seri Buku:</string>
+    <string name="user">User</string>
+    <string name="judul_buku">Judul Peminjaman:</string>
+    <string name="genre_buku">Genre Peminjaman:</string>
+    <string name="nomor_seri_buku">Nomor Seri Peminjaman:</string>
 </resources>

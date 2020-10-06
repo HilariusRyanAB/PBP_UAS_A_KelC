@@ -12,8 +12,8 @@
         android:title="@string/pengembalian" />
 
     <item
-        android:id="@+id/navigation_donasi"
-        android:icon="@drawable/ic_baseline_book_24"
-        android:title="@string/donasi" />
+        android:id="@+id/navigation_user"
+        android:icon="@drawable/ic_baseline_account_box_24"
+        android:title="@string/user" />
 
 </menu>

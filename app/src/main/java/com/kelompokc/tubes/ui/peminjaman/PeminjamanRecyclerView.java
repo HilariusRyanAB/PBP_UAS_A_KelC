@@ -39,10 +39,10 @@ public class PeminjamanRecyclerView extends RecyclerView.Adapter<PeminjamanRecyc
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position)
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position)
     {
         final Peminjaman peminjaman = result.get(position);
-        binding.setPeminjam(peminjaman);
+        binding.setPeminjaman(peminjaman);
     }
 
     @Override

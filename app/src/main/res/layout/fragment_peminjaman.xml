@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,23 +11,28 @@
         android:id="@+id/title_buku"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Daftar Buku"
+        android:text="Daftar Buku yang Bisa Dipinjam"
         android:textAlignment="center"
-        android:textSize="30dp"
-        app:layout_constraintEnd_toEndOf="@+id/nav_host_fragment"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_view_peminjaman"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_peminjaman"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_below="@+id/title_buku"
         app:layout_constraintTop_toBottomOf="@+id/title_buku"
         tools:listitem="@layout/adapter_recycler_view" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_pinjam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        app:srcCompat="@drawable/ic_check" />
+
+</RelativeLayout>

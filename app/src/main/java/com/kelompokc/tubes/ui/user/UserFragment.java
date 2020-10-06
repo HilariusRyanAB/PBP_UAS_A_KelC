@@ -1,4 +1,4 @@
-package com.kelompokc.tubes.ui.donasi;
+package com.kelompokc.tubes.ui.user;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.kelompokc.tubes.R;
 
-public class DonasiFragment extends Fragment {
+public class UserFragment extends Fragment {
 
-    private DonasiViewModel donasiViewModel;
+    private UserViewModel userViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        donasiViewModel =
-                ViewModelProviders.of(this).get(DonasiViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_donasi, container, false);
+        userViewModel =
+                ViewModelProviders.of(this).get(UserViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_user, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
-        donasiViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        userViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
