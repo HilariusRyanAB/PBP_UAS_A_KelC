@@ -13,20 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.Peminjaman;
-import com.kelompokc.tubes.ui.peminjaman.PeminjamanRecyclerView;
+import com.kelompokc.tubes.RecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PengembalianFragment extends Fragment
 {
     RecyclerView recyclerView;
-    PeminjamanRecyclerView pModel;
+    RecyclerViewAdapter pModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_pengembalian, container, false);
         recyclerView = root.findViewById(R.id.recycler_view_pengembalian);
-        pModel = new PeminjamanRecyclerView(getContext(), getArrayData());
+        pModel = new RecyclerViewAdapter(getContext(), getArrayData());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(pModel);

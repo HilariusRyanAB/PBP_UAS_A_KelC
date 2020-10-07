@@ -1,4 +1,4 @@
-package com.kelompokc.tubes.ui.peminjaman;
+package com.kelompokc.tubes;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,21 +11,24 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.kelompokc.tubes.Peminjaman;
-import com.kelompokc.tubes.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PeminjamanRecyclerView extends RecyclerView.Adapter<PeminjamanRecyclerView.MyViewHolder>
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>
 {
     private Context context;
     private List<Peminjaman> result;
     AdapterRecyclerViewBinding binding;
+    private FloatingActionButton add;
+    private FloatingActionButton remove;
+    private List<Peminjaman> peminjamanList = new ArrayList<>();
 
-    public PeminjamanRecyclerView(){}
+    public RecyclerViewAdapter(){}
 
-    public PeminjamanRecyclerView(Context context, List<Peminjaman> result)
+    public RecyclerViewAdapter(Context context, List<Peminjaman> result)
     {
         this.context = context;
         this.result = result;
@@ -45,6 +48,13 @@ public class PeminjamanRecyclerView extends RecyclerView.Adapter<PeminjamanRecyc
     {
         final Peminjaman peminjaman = result.get(position);
         binding.setPeminjaman(peminjaman);
+        if(peminjamanList.size()!=0)
+        {
+            for (int i = 0; i<peminjamanList.size();i++)
+            {
+                peminjamanList.remove(i);
+            }
+        }
         holder.itemCard.setOnClickListener(new View.OnClickListener()
         {
             @Override

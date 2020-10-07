@@ -12,20 +12,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kelompokc.tubes.Peminjaman;
+import com.kelompokc.tubes.RecyclerViewAdapter;
 import com.kelompokc.tubes.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PeminjamanFragment extends Fragment
 {
     RecyclerView recyclerView;
-    PeminjamanRecyclerView pModel;
+    RecyclerViewAdapter pModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_peminjaman, container, false);
         recyclerView = root.findViewById(R.id.recycler_view_peminjaman);
-        pModel = new PeminjamanRecyclerView(getContext(), getArrayData());
+        pModel = new RecyclerViewAdapter(getContext(), getArrayData());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(pModel);
