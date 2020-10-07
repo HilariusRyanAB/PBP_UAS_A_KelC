@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.kelompokc.tubes.Peminjaman;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 

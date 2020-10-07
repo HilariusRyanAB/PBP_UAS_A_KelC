@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kelompokc.tubes.Peminjaman;
 import com.kelompokc.tubes.R;
 
 import java.util.ArrayList;

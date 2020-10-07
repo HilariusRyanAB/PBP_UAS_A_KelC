@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kelompokc.tubes.R;
-import com.kelompokc.tubes.ui.peminjaman.Peminjaman;
+import com.kelompokc.tubes.Peminjaman;
 import com.kelompokc.tubes.ui.peminjaman.PeminjamanRecyclerView;
 
 import java.util.ArrayList;

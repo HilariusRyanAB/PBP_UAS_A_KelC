@@ -1,4 +1,4 @@
-package com.kelompokc.tubes.ui.peminjaman;
+package com.kelompokc.tubes;
 
 import android.widget.ImageView;
 
