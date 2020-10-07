@@ -53,11 +53,9 @@ public class PeminjamanRecyclerView extends RecyclerView.Adapter<PeminjamanRecyc
                 holder.itemCard.setChecked(!holder.itemCard.isChecked());
                 if(holder.itemCard.isChecked()==true)
                 {
-                    Toast.makeText(view.getContext(),"Pinjam: "+result.get(holder.getAdapterPosition()).getJudul(), Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(view.getContext(),"Batal Pinjam: "+result.get(holder.getAdapterPosition()).getJudul(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
