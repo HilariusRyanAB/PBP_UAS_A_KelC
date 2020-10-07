@@ -6,11 +6,11 @@ import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
 
-public class Peminjaman
+public class Buku
 {
     private String judul, genre, noSeri, imgURL;
 
-    public Peminjaman(String judul, String genre, String noSeri, String imgURL)
+    public Buku(String judul, String genre, String noSeri, String imgURL)
     {
         this.judul = judul;
         this.genre = genre;

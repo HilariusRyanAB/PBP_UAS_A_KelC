@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.peminjaman.PeminjamanFragment">
+    tools:context=".ui.buku.PeminjamanFragment">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title_buku"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Daftar Buku yang Bisa Dipinjam"
+        android:text="Daftar Buku yang Tersedia"
         android:textAlignment="center"
         android:layout_margin="15dp"
         android:textSize="22dp"

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
+import com.kelompokc.tubes.ui.peminjaman.ListPinjam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +21,15 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>
 {
     private Context context;
-    private List<Peminjaman> result;
+    private List<Buku> result;
     AdapterRecyclerViewBinding binding;
     private FloatingActionButton add;
     private FloatingActionButton remove;
-    private List<Peminjaman> peminjamanList = new ArrayList<>();
+    private ArrayList<Buku> bukuList = new ArrayList<>();
 
     public RecyclerViewAdapter(){}
 
-    public RecyclerViewAdapter(Context context, List<Peminjaman> result)
+    public RecyclerViewAdapter(Context context, List<Buku> result)
     {
         this.context = context;
         this.result = result;
@@ -46,13 +47,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position)
     {
-        final Peminjaman peminjaman = result.get(position);
-        binding.setPeminjaman(peminjaman);
-        if(peminjamanList.size()!=0)
+        final Buku buku = result.get(position);
+        binding.setBuku(buku);
+        if(bukuList.size()!=0)
         {
-            for (int i = 0; i<peminjamanList.size();i++)
+            for (int i = 0; i< bukuList.size(); i++)
             {
-                peminjamanList.remove(i);
+                bukuList.remove(i);
             }
         }
         holder.itemCard.setOnClickListener(new View.OnClickListener()
@@ -63,9 +64,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 holder.itemCard.setChecked(!holder.itemCard.isChecked());
                 if(holder.itemCard.isChecked()==true)
                 {
+                    setAddOrRemove(holder.getAdapterPosition(), 1);
                 }
                 else
                 {
+                    setAddOrRemove(holder.getAdapterPosition(), 0);
                 }
             }
         });
@@ -91,5 +94,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         {
             Toast.makeText(context, "You touch me?", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void setAddOrRemove(int index, int Status)
+    {
+        if(Status==1)
+        {
+            bukuList.add(result.get(index));
+        }
+        else
+        {
+            bukuList.remove(result.get(index));
+        }
+    }
+
+    public ArrayList<Buku> getDataBuku()
+    {
+        return bukuList;
     }
 }

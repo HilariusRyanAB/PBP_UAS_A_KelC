@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="peminjaman"
-            type="com.kelompokc.tubes.Peminjaman" />
+            name="buku"
+            type="com.kelompokc.tubes.Buku" />
     </data>
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    app:profileImage="@{peminjaman.imgURL}">
+                    app:profileImage="@{buku.imgURL}">
                 </ImageView>
             </LinearLayout>
             <LinearLayout
@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
-                        android:text="@{peminjaman.judul}"
+                        android:text="@{buku.judul}"
                         android:textSize="12dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
-                        android:text="@{peminjaman.genre}"
+                        android:text="@{buku.genre}"
                         android:textSize="12dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -82,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
-                        android:text="@{peminjaman.noSeri}"
+                        android:text="@{buku.noSeri}"
                         android:textSize="12dp"/>
                 </LinearLayout>
             </LinearLayout>

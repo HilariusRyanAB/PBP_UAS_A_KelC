@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         BottomNavigationView botNav = findViewById(R.id.nav_view);
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
