@@ -18,10 +18,9 @@
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="backgroundColor">#303030</item>
         <item name="cardbackground">#424242</item>
-        <item name="textcolor">#ffffff</item>
+        <item name="textcolor">#FFFFFF</item>
         <item name="tintcolor">#ffffff</item>
         <item name="buttoncolor">#00eebb</item>
     </style>
