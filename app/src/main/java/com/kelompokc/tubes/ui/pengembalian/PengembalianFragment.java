@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +26,7 @@ public class PengembalianFragment extends Fragment
     RecyclerView recyclerView;
     RecyclerViewAdapter pModel;
     ArrayList<Buku> listKembali = new ListKembali().listKembali;
+    ArrayList<Buku> tempKembali;
     FloatingActionButton remove;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
@@ -35,7 +37,24 @@ public class PengembalianFragment extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(pModel);
-        remove = root.findViewById(R.id.button_kembali);
+        remove = root.findViewById(R.id.kembali_button);
+        remove.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                tempKembali = pModel.getDataBuku();
+                if(tempKembali.isEmpty())
+                {
+                    Toast.makeText(getContext(),"Silahkan Pilih Buku Yang Akan Dikembalikan", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    CharSequence [] title = getStringArray(tempKembali);
+                    showDialog(title, tempKembali.size());
+                }
+            }
+        });
         return root;
     }
 
@@ -43,7 +62,7 @@ public class PengembalianFragment extends Fragment
     {
         String temp = "";
         AlertDialog alert = new AlertDialog.Builder(getContext()).create();
-        alert.setTitle("Buku Yang Akan Dipinjam");
+        alert.setTitle("Buku Yang Akan Dikembalikan");
         for(int i = 0; i<size;i++)
         {
             if(i<size-1) {

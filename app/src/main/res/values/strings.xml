@@ -6,4 +6,5 @@
     <string name="judul_buku">Judul Buku:</string>
     <string name="genre_buku">Genre Buku:</string>
     <string name="nomor_seri_buku">Nomor Seri Buku:</string>
+    <string name="daftar_pinjaman_buku">Daftar Pinjaman Buku</string>
 </resources>

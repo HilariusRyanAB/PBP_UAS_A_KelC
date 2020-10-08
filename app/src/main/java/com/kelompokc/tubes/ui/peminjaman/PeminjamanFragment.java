@@ -45,13 +45,13 @@ public class PeminjamanFragment extends Fragment
             public void onClick(View view)
             {
                 tempPinjam = pModel.getDataBuku();
-                if(tempPinjam.isEmpty() || tempPinjam.get(0).getJudul().equalsIgnoreCase(""))
+                if(tempPinjam.isEmpty())
                 {
-                    Toast.makeText(getContext(),"Silahkan Pilih Buku", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Silahkan Pilih Buku Yang Akan Dipinjam", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    CharSequence [] title= getStringArray(tempPinjam);
+                    CharSequence [] title = getStringArray(tempPinjam);
                     showDialog(title, tempPinjam.size());
                 }
             }
