@@ -13,12 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -34,6 +36,7 @@ public class SettingsFragment extends Fragment {
     private SettingsViewModel settingsViewModel;
     private String CHANNEL_ID="Channel 1";
     FloatingActionButton logOutBtn;
+    private Switch myswitch;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
@@ -67,6 +70,22 @@ public class SettingsFragment extends Fragment {
                             }
                         })
                 .create().show();
+            }
+        });
+        myswitch=(Switch)root.findViewById(R.id.myswitch);
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            myswitch.setChecked(true);
+        }
+        myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b == true) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    getActivity().setTheme(R.style.darkTheme);
+                }else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    getActivity().setTheme(R.style.AppTheme);
+                }
             }
         });
         return root;
