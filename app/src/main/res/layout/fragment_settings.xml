@@ -22,8 +22,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:text="Night Mode"
         android:textColor="?attr/textcolor"
         android:id="@+id/myswitch"/>
