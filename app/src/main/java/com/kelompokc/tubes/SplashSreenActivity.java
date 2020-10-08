@@ -18,7 +18,7 @@ public class SplashSreenActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_sreen);
         Animation splashAnim = AnimationUtils.loadAnimation(this, R.anim.animasi);
-        ImageView imageView = findViewById(R.id.splash_logo);
+        ImageView imageView = findViewById(R.id.imageView2);
         imageView.setAnimation(splashAnim);
         new Handler().postDelayed(new Runnable() {
             @Override
