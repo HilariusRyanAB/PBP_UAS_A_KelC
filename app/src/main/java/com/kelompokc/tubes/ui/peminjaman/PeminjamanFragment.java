@@ -66,7 +66,8 @@ public class PeminjamanFragment extends Fragment
         alert.setTitle("Buku Yang Akan Dipinjam");
         for(int i = 0; i<size;i++)
         {
-            if(i<size-1) {
+            if(i<size-1)
+            {
                 temp =temp + a[i] + "\n\n";
             }
             else

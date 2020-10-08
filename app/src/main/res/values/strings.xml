@@ -8,4 +8,8 @@
     <string name="nomor_seri_buku">Nomor Seri Buku:</string>
     <string name="daftar_buku_yang_dipinjam">Daftar Buku yang Dipinjam</string>
     <string name="daftar_buku_yang_tersedia">Daftar Buku yang Tersedia</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
 </resources>
