@@ -27,7 +27,7 @@
         tools:listitem="@layout/adapter_recycler_view" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_pinjam"
+        android:id="@+id/button_kembali"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

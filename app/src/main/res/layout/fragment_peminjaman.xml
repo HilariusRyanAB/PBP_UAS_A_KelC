@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.buku.PeminjamanFragment">
+    tools:context=".ui.peminjaman.PeminjamanFragment">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title_buku"

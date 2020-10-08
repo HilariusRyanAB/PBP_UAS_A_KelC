@@ -25,7 +25,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     AdapterRecyclerViewBinding binding;
     private FloatingActionButton add;
     private FloatingActionButton remove;
-    private ArrayList<Buku> bukuList = new ArrayList<>();
+    private ArrayList<Buku> bukuList = new ArrayList<Buku>();
 
     public RecyclerViewAdapter(){}
 
