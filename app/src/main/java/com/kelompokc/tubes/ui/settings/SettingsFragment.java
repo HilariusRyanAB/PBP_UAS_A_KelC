@@ -1,5 +1,6 @@
 package com.kelompokc.tubes.ui.settings;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -32,6 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
@@ -40,7 +42,7 @@ import com.kelompokc.tubes.R;
 public class SettingsFragment extends Fragment
 {
     private String CHANNEL_ID="Channel 1";
-    FloatingActionButton logOutBtn;
+    MaterialButton logOutBtn;
     private Switch myswitch;
 
     public static final String SHARE_PREFS = "SharedPrefs";
@@ -55,7 +57,7 @@ public class SettingsFragment extends Fragment
                              ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
-        myswitch=(Switch)root.findViewById(R.id.myswitch);
+        myswitch = (Switch)root.findViewById(R.id.myswitch);
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
@@ -103,92 +105,104 @@ public class SettingsFragment extends Fragment
                         .create().show();
             }
         });
-
         seekBar = (SeekBar)root.findViewById(R.id.seekBar);
         seekBar.setMax(255);
         seekBar.setProgress(getBrightness());
-
         getPermission();
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(fromUser && success){
+                if(fromUser && success)
+                {
                     setBrightness(progress);
                 }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
 
             }
-
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if(!success){
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+                if(!success)
+                {
                     Toast.makeText(getActivity(), "Permission not granted!", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         loadData();
         return root;
     }
 
-    private void setBrightness(int brightness){
-        if (brightness < 0){
+    private void setBrightness(int brightness)
+    {
+        if (brightness < 0)
+        {
             brightness = 0;
         }
-        else if (brightness > 255){
+        else if (brightness > 255)
+        {
             brightness = 255;
         }
-
         ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
         Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, brightness);
     }
 
-    private int getBrightness(){
+    private int getBrightness()
+    {
         int brightness = 100;
-        try {
+        try
+        {
             ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
             brightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS);
-        }catch (Settings.SettingNotFoundException e){
+        }
+        catch (Settings.SettingNotFoundException e)
+        {
             e.printStackTrace();
         }
         return brightness;
     }
 
-    private void getPermission(){
+    private void getPermission()
+    {
         boolean value;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
             value = Settings.System.canWrite(getActivity().getApplicationContext());
-            if (value){
+            if (value)
+            {
                 success = true;
             }
-            else{
+            else
+            {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 intent.setData(Uri.parse("package" + getActivity().getApplicationContext().getPackageName()));
-                startActivityForResult(intent, 1000);
+                getActivity().startActivityForResult(intent, 1000);
             }
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if(requestCode == 1000)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
                 boolean value = Settings.System.canWrite(getActivity().getApplicationContext());
-                if (value){
+                if (value)
+                {
                     success = true;
-                }else{
+                }
+                else
+                {
                     Toast.makeText(getActivity(), "Permission not granted!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
     }
-
 
     public void createNotificationChannel()
     {

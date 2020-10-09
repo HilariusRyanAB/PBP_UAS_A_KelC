@@ -17,23 +17,27 @@ public class SplashSreenActivity extends AppCompatActivity
 {
     private static int SPLASH_ANIMATION = 3000;
     private boolean aBoolean;
+    private SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        sharedPreferences  = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
+        if(sharedPreferences!=null)
+        {
+            aBoolean = sharedPreferences.getBoolean("switch1", false);
+            if(aBoolean)
+            {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                getApplicationContext().setTheme(R.style.darkTheme);
+            }
+            else
+            {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                getApplicationContext().setTheme(R.style.AppTheme);
+            }
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_sreen);
-        SharedPreferences sharedPreferences = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
-        aBoolean = sharedPreferences.getBoolean("switch1", false);
-        if(aBoolean)
-        {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            getApplicationContext().setTheme(R.style.darkTheme);
-        }
-        else
-        {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            getApplicationContext().setTheme(R.style.AppTheme);
-        }
         Animation splashAnim = AnimationUtils.loadAnimation(this, R.anim.animasi);
         ImageView imageView = findViewById(R.id.imageView2);
         imageView.setAnimation(splashAnim);
