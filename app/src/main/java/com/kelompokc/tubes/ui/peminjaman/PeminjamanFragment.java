@@ -1,5 +1,6 @@
 package com.kelompokc.tubes.ui.peminjaman;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.Buku;
+import com.kelompokc.tubes.QRBarcodeActivity;
 import com.kelompokc.tubes.RecyclerViewAdapter;
 import com.kelompokc.tubes.R;
 
@@ -25,7 +27,7 @@ public class PeminjamanFragment extends Fragment
 {
     RecyclerView recyclerView;
     RecyclerViewAdapter pModel;
-    FloatingActionButton add;
+    FloatingActionButton add, scan;
     ArrayList<Buku> listBuku = new ArrayList<>();
     ArrayList<Buku> tempPinjam = new ArrayList<>();
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,6 +56,14 @@ public class PeminjamanFragment extends Fragment
                     CharSequence [] title = getStringArray(tempPinjam);
                     showDialog(title, tempPinjam.size());
                 }
+            }
+        });
+
+        scan = root.findViewById(R.id.button_qr);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), QRBarcodeActivity.class));
             }
         });
         return root;
