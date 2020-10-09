@@ -32,8 +32,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
 import com.kelompokc.tubes.R;
 
-public class SettingsFragment extends Fragment {
-
+public class SettingsFragment extends Fragment
+{
     private SettingsViewModel settingsViewModel;
     private String CHANNEL_ID="Channel 1";
     FloatingActionButton logOutBtn;
@@ -42,7 +42,7 @@ public class SettingsFragment extends Fragment {
     public static final String SHARE_PREFS = "SharedPrefs";
     public static final String SWITCH1 = "switch1";
 
-    private boolean switchOnOff;
+    public boolean switchOnOff;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
@@ -79,6 +79,7 @@ public class SettingsFragment extends Fragment {
                 .create().show();
             }
         });
+
         myswitch=(Switch)root.findViewById(R.id.myswitch);
         if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES)
         {
@@ -88,22 +89,20 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b)
             {
-                saveData();
-                if(b == true)
+                if(b)
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     getActivity().setTheme(R.style.darkTheme);
-                    loadData(true);
                 }
                 else
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     getActivity().setTheme(R.style.AppTheme);
-                    loadData(false);
                 }
+                saveData();
             }
         });
-        updateView();
+        loadData();
         return root;
     }
 
@@ -140,14 +139,10 @@ public class SettingsFragment extends Fragment {
         editor.apply();
     }
 
-    public void loadData(boolean b)
+    public void loadData()
     {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
-        switchOnOff = sharedPreferences.getBoolean(SWITCH1, b);
-    }
-
-    public void updateView()
-    {
+        switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
         myswitch.setChecked(switchOnOff);
     }
 }

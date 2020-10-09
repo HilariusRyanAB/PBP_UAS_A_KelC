@@ -6,7 +6,7 @@
     <string name="judul_buku">Judul Buku:</string>
     <string name="genre_buku">Genre Buku:</string>
     <string name="nomor_seri_buku">Nomor Seri Buku:</string>
-    <string name="daftar_buku_yang_dipinjam">Daftar Buku yang Dipinjam</string>
+    <string name="daftar_buku_yang_dipinjam">Daftar Buku yang Sedang Dipinjam</string>
     <string name="daftar_buku_yang_tersedia">Daftar Buku yang Tersedia</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
