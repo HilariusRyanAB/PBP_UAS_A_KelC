@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,6 +38,12 @@ public class SettingsFragment extends Fragment {
     private String CHANNEL_ID="Channel 1";
     FloatingActionButton logOutBtn;
     private Switch myswitch;
+
+    public static final String SHARE_PREFS = "SharedPrefs";
+    public static final String SWITCH1 = "switch1";
+
+    private boolean switchOnOff;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
@@ -73,21 +80,30 @@ public class SettingsFragment extends Fragment {
             }
         });
         myswitch=(Switch)root.findViewById(R.id.myswitch);
-        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES)
+        {
             myswitch.setChecked(true);
         }
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b == true) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+            {
+                saveData();
+                if(b == true)
+                {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     getActivity().setTheme(R.style.darkTheme);
-                }else{
+                    loadData(true);
+                }
+                else
+                {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     getActivity().setTheme(R.style.AppTheme);
+                    loadData(false);
                 }
             }
         });
+        updateView();
         return root;
     }
 
@@ -114,5 +130,24 @@ public class SettingsFragment extends Fragment {
         builder.setContentIntent(contentIntent);
         NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
+    }
+
+    public void saveData()
+    {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(SWITCH1, myswitch.isChecked());
+        editor.apply();
+    }
+
+    public void loadData(boolean b)
+    {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
+        switchOnOff = sharedPreferences.getBoolean(SWITCH1, b);
+    }
+
+    public void updateView()
+    {
+        myswitch.setChecked(switchOnOff);
     }
 }
