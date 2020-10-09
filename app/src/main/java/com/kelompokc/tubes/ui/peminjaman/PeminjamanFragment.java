@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,8 @@ public class PeminjamanFragment extends Fragment
 {
     RecyclerView recyclerView;
     RecyclerViewAdapter pModel;
-    FloatingActionButton add, scan;
+    FloatingActionButton add;
+    ImageView scan;
     ArrayList<Buku> listBuku = new ArrayList<>();
     ArrayList<Buku> tempPinjam = new ArrayList<>();
     public View onCreateView(@NonNull LayoutInflater inflater,

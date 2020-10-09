@@ -27,19 +27,21 @@ public class SplashSreenActivity extends AppCompatActivity
         if(aBoolean)
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            this.setTheme(R.style.darkTheme);
+            getApplicationContext().setTheme(R.style.darkTheme);
         }
         else
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            this.setTheme(R.style.AppTheme);
+            getApplicationContext().setTheme(R.style.AppTheme);
         }
         Animation splashAnim = AnimationUtils.loadAnimation(this, R.anim.animasi);
         ImageView imageView = findViewById(R.id.imageView2);
         imageView.setAnimation(splashAnim);
-        new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 Intent intent = new Intent(SplashSreenActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();

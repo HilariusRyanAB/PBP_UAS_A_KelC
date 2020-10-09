@@ -27,15 +27,13 @@
         app:layout_constraintTop_toBottomOf="@+id/title_buku"
         tools:listitem="@layout/adapter_recycler_view" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageView
         android:id="@+id/button_qr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="450dp"
-        android:layout_marginRight="15dp"
+        android:layout_margin="20dp"
         app:srcCompat="@drawable/ic_baseline_search_24" />
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_pinjam"

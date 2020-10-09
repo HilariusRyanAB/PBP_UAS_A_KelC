@@ -34,7 +34,6 @@ import com.kelompokc.tubes.R;
 
 public class SettingsFragment extends Fragment
 {
-    private SettingsViewModel settingsViewModel;
     private String CHANNEL_ID="Channel 1";
     FloatingActionButton logOutBtn;
     private Switch myswitch;
@@ -47,9 +46,26 @@ public class SettingsFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        settingsViewModel =
-                ViewModelProviders.of(this).get(SettingsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
+        myswitch=(Switch)root.findViewById(R.id.myswitch);
+        myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+            {
+                if(b)
+                {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    getActivity().setTheme(R.style.darkTheme);
+                }
+                else
+                {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    getActivity().setTheme(R.style.AppTheme);
+                }
+                saveData(b);
+            }
+        });
         logOutBtn = root.findViewById(R.id.button_logOut);
         logOutBtn.setOnClickListener(new View.OnClickListener()
         {
@@ -76,30 +92,7 @@ public class SettingsFragment extends Fragment
 
                             }
                         })
-                .create().show();
-            }
-        });
-
-        myswitch=(Switch)root.findViewById(R.id.myswitch);
-        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES)
-        {
-            myswitch.setChecked(true);
-        }
-        myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
-            {
-                if(b)
-                {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    getActivity().setTheme(R.style.darkTheme);
-                }
-                else
-                {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    getActivity().setTheme(R.style.AppTheme);
-                }
-                saveData();
+                        .create().show();
             }
         });
         loadData();
@@ -131,17 +124,17 @@ public class SettingsFragment extends Fragment
         manager.notify(0, builder.build());
     }
 
-    public void saveData()
+    public void saveData(boolean b)
     {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SWITCH1, myswitch.isChecked());
+        editor.putBoolean(SWITCH1, b);
         editor.apply();
     }
 
     public void loadData()
     {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
         switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
         myswitch.setChecked(switchOnOff);
     }
