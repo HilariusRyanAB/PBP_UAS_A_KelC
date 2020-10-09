@@ -12,5 +12,6 @@
         android:layout_height="wrap_content"
         android:text="Scan Now"
         android:textSize="30sp"
+        android:backgroundTint="@color/colorAccent"
         android:layout_centerInParent="true"/>
 </RelativeLayout>

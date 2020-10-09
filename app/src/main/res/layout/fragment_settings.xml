@@ -29,19 +29,21 @@
 
     <Switch
         android:id="@+id/myswitch"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="100dp"
         android:text="Night Mode"
         android:textColor="?attr/textcolor" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_alignParentEnd="true"
+    <Button
+        android:id="@+id/button_logOut"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_marginBottom="69dp"
         android:src="@drawable/ic_baseline_power_settings_new_24"
-        android:id="@+id/button_logOut"/>
+        android:text="Logout" />
 </RelativeLayout>

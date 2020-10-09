@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/nav_host_fragment"
         android:background="?android:attr/windowBackground"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
