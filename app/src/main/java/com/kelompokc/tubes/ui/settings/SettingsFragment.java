@@ -4,17 +4,22 @@ import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.audiofx.Equalizer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +45,9 @@ public class SettingsFragment extends Fragment
 
     public static final String SHARE_PREFS = "SharedPrefs";
     public static final String SWITCH1 = "switch1";
+
+    SeekBar seekBar;
+    boolean success = false;
 
     public boolean switchOnOff;
 
@@ -95,9 +103,92 @@ public class SettingsFragment extends Fragment
                         .create().show();
             }
         });
+
+        seekBar = (SeekBar)root.findViewById(R.id.seekBar);
+        seekBar.setMax(255);
+        seekBar.setProgress(getBrightness());
+
+        getPermission();
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser && success){
+                    setBrightness(progress);
+                }
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if(!success){
+                    Toast.makeText(getActivity(), "Permission not granted!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
         loadData();
         return root;
     }
+
+    private void setBrightness(int brightness){
+        if (brightness < 0){
+            brightness = 0;
+        }
+        else if (brightness > 255){
+            brightness = 255;
+        }
+
+        ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
+        Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, brightness);
+    }
+
+    private int getBrightness(){
+        int brightness = 100;
+        try {
+            ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
+            brightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS);
+        }catch (Settings.SettingNotFoundException e){
+            e.printStackTrace();
+        }
+        return brightness;
+    }
+
+    private void getPermission(){
+        boolean value;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            value = Settings.System.canWrite(getActivity().getApplicationContext());
+            if (value){
+                success = true;
+            }
+            else{
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                intent.setData(Uri.parse("package" + getActivity().getApplicationContext().getPackageName()));
+                startActivityForResult(intent, 1000);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                boolean value = Settings.System.canWrite(getActivity().getApplicationContext());
+                if (value){
+                    success = true;
+                }else{
+                    Toast.makeText(getActivity(), "Permission not granted!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
 
     public void createNotificationChannel()
     {
