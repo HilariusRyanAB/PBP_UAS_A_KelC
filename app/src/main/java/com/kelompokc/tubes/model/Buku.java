@@ -1,4 +1,4 @@
-package com.kelompokc.tubes;
+package com.kelompokc.tubes.model;
 
 import android.widget.ImageView;
 

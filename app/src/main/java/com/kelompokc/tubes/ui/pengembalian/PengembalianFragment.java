@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.R;
-import com.kelompokc.tubes.Buku;
+import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.RecyclerViewAdapter;
 
 import java.util.ArrayList;

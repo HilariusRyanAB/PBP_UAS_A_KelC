@@ -1,6 +1,6 @@
 package com.kelompokc.tubes.ui.pengembalian;
 
-import com.kelompokc.tubes.Buku;
+import com.kelompokc.tubes.model.Buku;
 
 import java.util.ArrayList;
 

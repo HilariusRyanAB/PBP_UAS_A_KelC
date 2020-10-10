@@ -5,7 +5,7 @@
     <data>
         <variable
             name="buku"
-            type="com.kelompokc.tubes.Buku" />
+            type="com.kelompokc.tubes.model.Buku" />
     </data>
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"

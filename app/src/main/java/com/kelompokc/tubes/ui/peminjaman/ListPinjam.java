@@ -1,12 +1,13 @@
 package com.kelompokc.tubes.ui.peminjaman;
 
-import com.kelompokc.tubes.Buku;
+import com.kelompokc.tubes.model.Buku;
 
 import java.util.ArrayList;
 
 public class ListPinjam
 {
     public ArrayList<Buku> listPinjam;
+
     public ListPinjam()
     {
         listPinjam = new ArrayList();
