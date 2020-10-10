@@ -27,7 +27,7 @@
         android:text="Tampilan Background"
         android:textSize="20dp" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/myswitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

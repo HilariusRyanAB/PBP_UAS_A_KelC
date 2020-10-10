@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
-import com.kelompokc.tubes.ui.peminjaman.ListPinjam;
 
 import java.util.ArrayList;
 import java.util.List;

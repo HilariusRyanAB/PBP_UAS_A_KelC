@@ -1,6 +1,5 @@
 package com.kelompokc.tubes.ui.settings;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -10,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,12 +16,8 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,11 +25,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
 import com.kelompokc.tubes.R;
@@ -44,7 +36,7 @@ public class SettingsFragment extends Fragment
 {
     private String CHANNEL_ID="Channel 1";
     MaterialButton logOutBtn;
-    private Switch myswitch;
+    private SwitchMaterial myswitch;
     MaterialButton exitBtn;
 
     public static final String SHARE_PREFS = "SharedPrefs";
@@ -58,7 +50,7 @@ public class SettingsFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
-        myswitch = (Switch)root.findViewById(R.id.myswitch);
+        myswitch = (SwitchMaterial)root.findViewById(R.id.myswitch);
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
