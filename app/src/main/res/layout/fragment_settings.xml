@@ -37,29 +37,14 @@
         android:text="Night Mode"
         android:textColor="?attr/textcolor" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="180dp"
-        android:text="Kecerahan"
-        android:textSize="20dp" />
-
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="220dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:id="@+id/seekBar"/>
-
     <com.google.android.material.button.MaterialButton
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="290dp"
         android:gravity="center"
-        android:text="Tentang" />
+        android:text="Tentang"
+        android:id="@+id/button_tentang"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_logOut"
@@ -75,9 +60,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="350dp"
         android:backgroundTint="@color/colorAccent"
-        android:layout_marginLeft="105dp"
         android:text="Exit" />
 
 </RelativeLayout>

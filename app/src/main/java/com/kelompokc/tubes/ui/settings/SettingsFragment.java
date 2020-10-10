@@ -38,31 +38,24 @@ public class SettingsFragment extends Fragment
     MaterialButton logOutBtn;
     private SwitchMaterial myswitch;
     MaterialButton exitBtn;
+    MaterialButton tentangBtn;
 
     public static final String SHARE_PREFS = "SharedPrefs";
     public static final String SWITCH1 = "switch1";
 
-    SeekBar seekBar;
-    boolean success = false;
 
     public boolean switchOnOff;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
-        myswitch = (SwitchMaterial)root.findViewById(R.id.myswitch);
-        myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
+        myswitch = (SwitchMaterial) root.findViewById(R.id.myswitch);
+        myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
-            {
-                if(b)
-                {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     getActivity().getApplicationContext().setTheme(R.style.AppTheme);
-                }
-                else
-                {
+                } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     getActivity().getApplicationContext().setTheme(R.style.AppTheme);
                 }
@@ -70,35 +63,29 @@ public class SettingsFragment extends Fragment
             }
         });
         logOutBtn = root.findViewById(R.id.button_logOut);
-        logOutBtn.setOnClickListener(new View.OnClickListener()
-        {
+        logOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 new AlertDialog.Builder(getContext()).setTitle("Log Out").setMessage("Are You Sure?")
-                        .setPositiveButton("Log Out", new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton("Log Out", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i)
-                            {
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 FirebaseAuth.getInstance().signOut();
                                 createNotificationChannel();
                                 addNotification();
                                 startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
                             }
                         })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-                        {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i)
-                            {
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
                             }
                         })
                         .create().show();
             }
         });
-        
+
         exitBtn = root.findViewById(R.id.button_exit);
         exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,108 +94,38 @@ public class SettingsFragment extends Fragment
                 System.exit(0);
             }
         });
-        //getPermission();
-        seekBar = (SeekBar)root.findViewById(R.id.seekBar);
-        seekBar.setMax(255);
-        seekBar.setProgress(getBrightness());
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                if(fromUser && success)
-                {
-                    setBrightness(progress);
-                }
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
 
-            }
+
+        tentangBtn = root.findViewById(R.id.button_tentang);
+        tentangBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-                if(!success)
-                {
-                    Toast.makeText(getActivity(), "Permission not granted!", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View view) {
+                showDialog();
             }
         });
-        loadData();
+
         return root;
     }
 
-    private void setBrightness(int brightness)
-    {
-        if (brightness < 0)
-        {
-            brightness = 0;
-        }
-        else if (brightness > 255)
-        {
-            brightness = 255;
-        }
-        ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
-        Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, brightness);
+    private void showDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity().getApplicationContext());
+        alertDialogBuilder.setTitle("Atma Perpus");
+        alertDialogBuilder
+                .setMessage("Sebuah aplikasi yang akan membantu anda untuk mempermudah meminjam buku di perpustakan")
+                .setMessage("Atma Perpus dengan fitur yang memadai mempermudah peminjaman dan pengembalian buku")
+                .setMessage("dengan sistem yang mudah digunakan untuk siapa saja.")
+                .setCancelable(false)
+                .setPositiveButton("Back", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        getActivity().finish();
+                    }
+                });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
-
-    private int getBrightness()
-    {
-        int brightness = 100;
-        try
-        {
-            ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
-            brightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS);
-        }
-        catch (Settings.SettingNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        return brightness;
-    }
-
-    private void getPermission()
-    {
-        boolean value;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            value = Settings.System.canWrite(getContext().getApplicationContext());
-            if (value)
-            {
-                success = true;
-            }
-            else
-            {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                intent.setData(Uri.parse("package" + getContext().getApplicationContext().getPackageName()));
-                getActivity().startActivityForResult(intent, 1000);
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000)
-        {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            {
-                boolean value = Settings.System.canWrite(getActivity().getApplicationContext());
-                if (value)
-                {
-                    success = true;
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), "Permission not granted!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-
     public void createNotificationChannel()
     {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
