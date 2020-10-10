@@ -37,6 +37,21 @@
         android:text="Night Mode"
         android:textColor="?attr/textcolor" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/versi_app"
+        android:layout_marginLeft="15dp"
+        android:textSize="20dp"
+        android:layout_marginTop="190dp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="230dp"
+        android:text="@string/versi"/>
+
     <com.google.android.material.button.MaterialButton
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -59,17 +74,10 @@
         android:id="@+id/button_exit"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
+        android:layout_marginTop="410dp"
         android:backgroundTint="@color/colorAccent"
         android:text="Exit" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Version 1.0.0"/>
 
 </RelativeLayout>
