@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ListPinjam
 {
-    public ArrayList<Buku> listPinjam = new ArrayList<>();
+    public ArrayList<Buku> listPinjam;
     public ListPinjam()
     {
         listPinjam = new ArrayList();

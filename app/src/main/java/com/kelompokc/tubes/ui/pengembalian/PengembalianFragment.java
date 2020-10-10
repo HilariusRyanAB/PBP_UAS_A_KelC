@@ -28,8 +28,7 @@ public class PengembalianFragment extends Fragment
     ArrayList<Buku> listKembali = new ListKembali().listKembali;
     ArrayList<Buku> tempKembali;
     FloatingActionButton remove;
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_pengembalian, container, false);
         recyclerView = root.findViewById(R.id.recycler_view_pengembalian);
@@ -65,7 +64,8 @@ public class PengembalianFragment extends Fragment
         alert.setTitle("Buku Yang Akan Dikembalikan");
         for(int i = 0; i<size;i++)
         {
-            if(i<size-1) {
+            if(i<size-1)
+            {
                 temp =temp + a[i] + "\n\n";
             }
             else

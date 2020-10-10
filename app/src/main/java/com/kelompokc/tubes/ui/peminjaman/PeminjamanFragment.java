@@ -32,8 +32,7 @@ public class PeminjamanFragment extends Fragment
     ImageView scan;
     ArrayList<Buku> listBuku = new ArrayList<>();
     ArrayList<Buku> tempPinjam = new ArrayList<>();
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_peminjaman, container, false);
         recyclerView = root.findViewById(R.id.recycler_view_peminjaman);
