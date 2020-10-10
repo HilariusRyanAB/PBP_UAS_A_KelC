@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="90dp"
-        android:text="Tampilan Background"
+        android:text="@string/tampilan_background"
         android:textSize="20dp" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -34,7 +34,7 @@
         android:layout_marginLeft="21dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="130dp"
-        android:text="Night Mode"
+        android:text="@string/night_mode"
         android:textColor="?attr/textcolor" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -58,8 +58,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="290dp"
         android:gravity="center"
-        android:text="Tentang"
-        android:id="@+id/button_tentang"/>
+        android:text="@string/about_us"
+        android:id="@+id/button_aboutUs"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_logOut"
@@ -68,7 +68,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="350dp"
         android:backgroundTint="@color/colorAccent"
-        android:text="Logout" />
+        android:text="@string/logout" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_exit"
@@ -78,6 +78,6 @@
         android:layout_marginBottom="50dp"
         android:layout_marginTop="410dp"
         android:backgroundTint="@color/colorAccent"
-        android:text="Exit" />
+        android:text="@string/exit" />
 
 </RelativeLayout>

@@ -28,4 +28,9 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="versi_app">Versi App</string>
     <string name="versi">Versi 1.0.0</string>
+    <string name="logout">Logout</string>
+    <string name="about_us">About Us</string>
+    <string name="exit">Exit</string>
+    <string name="night_mode">Night Mode</string>
+    <string name="tampilan_background">Tampilan Background</string>
 </resources>

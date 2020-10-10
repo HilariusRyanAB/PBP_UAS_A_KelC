@@ -35,7 +35,7 @@ public class SettingsFragment extends Fragment
     private MaterialButton logOutBtn;
     private SwitchMaterial myswitch;
     private MaterialButton exitBtn;
-    private MaterialButton tentangBtn;
+    private MaterialButton aboutBtn;
 
     public boolean switchOnOff;
 
@@ -85,13 +85,13 @@ public class SettingsFragment extends Fragment
             }
         });
 
-        tentangBtn = root.findViewById(R.id.button_tentang);
-        tentangBtn.setOnClickListener(new View.OnClickListener()
+        aboutBtn = root.findViewById(R.id.button_aboutUs);
+        aboutBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                tentangDialog();
+                aboutUsDialog();
             }
         });
         loadData();
@@ -123,7 +123,7 @@ public class SettingsFragment extends Fragment
                 .create().show();
     }
 
-    public void tentangDialog()
+    public void aboutUsDialog()
     {
         new AlertDialog.Builder(getContext()).setTitle("Atma Perpus")
                 .setMessage("Sebuah aplikasi yang akan membantu anda untuk mempermudah meminjam buku di perpustakan " +

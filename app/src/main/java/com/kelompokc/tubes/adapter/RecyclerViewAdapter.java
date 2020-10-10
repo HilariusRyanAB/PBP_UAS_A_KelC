@@ -1,4 +1,4 @@
-package com.kelompokc.tubes;
+package com.kelompokc.tubes.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 import com.kelompokc.tubes.model.Buku;
 
@@ -49,6 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
         final Buku buku = result.get(position);
         binding.setBuku(buku);
+
         if(bukuList.size()!=0)
         {
             for (int i = 0; i< bukuList.size(); i++)
@@ -56,6 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 bukuList.remove(i);
             }
         }
+
         holder.itemCard.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -88,7 +91,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         {
             super(itemView);
             binding = DataBindingUtil.bind(itemView);
-            itemCard = itemView.findViewById(R.id.item_pinjam);
+            itemCard = itemView.findViewById(R.id.item_buku);
         }
         public void onClick(View view)
         {

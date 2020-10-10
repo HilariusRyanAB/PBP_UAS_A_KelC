@@ -10,7 +10,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_marginBottom="3dp"
-        android:id="@+id/item_pinjam"
+        android:id="@+id/item_buku"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:checkable="true"
