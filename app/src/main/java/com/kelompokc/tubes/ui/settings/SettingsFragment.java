@@ -115,13 +115,11 @@ public class SettingsFragment extends Fragment
                 .setMessage("Atma Perpus dengan fitur yang memadai mempermudah peminjaman dan pengembalian buku")
                 .setMessage("dengan sistem yang mudah digunakan untuk siapa saja.")
                 .setCancelable(false)
-                .setPositiveButton("Back", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-                        getActivity().finish();
+                        dialog.cancel();
                     }
                 });
-
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
