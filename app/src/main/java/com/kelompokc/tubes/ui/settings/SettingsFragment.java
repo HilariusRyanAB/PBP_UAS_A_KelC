@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -44,6 +45,7 @@ public class SettingsFragment extends Fragment
     private String CHANNEL_ID="Channel 1";
     MaterialButton logOutBtn;
     private Switch myswitch;
+    MaterialButton exitBtn;
 
     public static final String SHARE_PREFS = "SharedPrefs";
     public static final String SWITCH1 = "switch1";
@@ -102,6 +104,15 @@ public class SettingsFragment extends Fragment
                             }
                         })
                         .create().show();
+            }
+        });
+        
+        exitBtn = root.findViewById(R.id.button_exit);
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+                System.exit(0);
             }
         });
         //getPermission();
@@ -204,6 +215,7 @@ public class SettingsFragment extends Fragment
             }
         }
     }
+
 
     public void createNotificationChannel()
     {
