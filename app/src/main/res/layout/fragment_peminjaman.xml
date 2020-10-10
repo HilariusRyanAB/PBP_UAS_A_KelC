@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title_buku"
         tools:listitem="@layout/adapter_recycler_view" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/button_qr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

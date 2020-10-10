@@ -53,8 +53,7 @@ public class SettingsFragment extends Fragment
 
     public boolean switchOnOff;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
         myswitch = (Switch)root.findViewById(R.id.myswitch);
@@ -66,12 +65,12 @@ public class SettingsFragment extends Fragment
                 if(b)
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    getActivity().setTheme(R.style.darkTheme);
+                    getActivity().getApplicationContext().setTheme(R.style.AppTheme);
                 }
                 else
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    getActivity().setTheme(R.style.AppTheme);
+                    getActivity().getApplicationContext().setTheme(R.style.AppTheme);
                 }
                 saveData(b);
             }
@@ -91,7 +90,7 @@ public class SettingsFragment extends Fragment
                                 FirebaseAuth.getInstance().signOut();
                                 createNotificationChannel();
                                 addNotification();
-                                startActivity(new Intent(getContext(), LoginActivity.class));
+                                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
@@ -105,13 +104,15 @@ public class SettingsFragment extends Fragment
                         .create().show();
             }
         });
+        //getPermission();
         seekBar = (SeekBar)root.findViewById(R.id.seekBar);
         seekBar.setMax(255);
         seekBar.setProgress(getBrightness());
-        getPermission();
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
                 if(fromUser && success)
                 {
                     setBrightness(progress);
@@ -169,7 +170,7 @@ public class SettingsFragment extends Fragment
         boolean value;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
-            value = Settings.System.canWrite(getActivity().getApplicationContext());
+            value = Settings.System.canWrite(getContext().getApplicationContext());
             if (value)
             {
                 success = true;
@@ -177,7 +178,7 @@ public class SettingsFragment extends Fragment
             else
             {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                intent.setData(Uri.parse("package" + getActivity().getApplicationContext().getPackageName()));
+                intent.setData(Uri.parse("package" + getContext().getApplicationContext().getPackageName()));
                 getActivity().startActivityForResult(intent, 1000);
             }
         }

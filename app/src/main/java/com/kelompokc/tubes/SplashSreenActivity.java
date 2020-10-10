@@ -13,6 +13,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashSreenActivity extends AppCompatActivity
 {
     private static int SPLASH_ANIMATION = 3000;

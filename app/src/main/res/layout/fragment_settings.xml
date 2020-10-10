@@ -31,8 +31,8 @@
         android:id="@+id/myswitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="130dp"
         android:text="Night Mode"
         android:textColor="?attr/textcolor" />
