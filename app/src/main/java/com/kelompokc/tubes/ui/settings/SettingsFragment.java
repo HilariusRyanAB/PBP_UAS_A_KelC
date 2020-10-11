@@ -25,7 +25,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
 import com.kelompokc.tubes.MapActivity;
-import com.kelompokc.tubes.QRBarcodeActivity;
 import com.kelompokc.tubes.R;
 
 public class SettingsFragment extends Fragment

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MapActivity">
+
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
@@ -28,10 +29,5 @@
         android:textColor="@color/mapboxWhite"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.tabs.TabItem
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/menuItemChangeStyle"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
