@@ -41,7 +41,6 @@ public class PengembalianFragment extends Fragment
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         remove = root.findViewById(R.id.kembali_button);
 
-        //addBukuKembaliAll();
         //deleteBukuKembaliAll(tempList);
         getBukuKembali();
 
