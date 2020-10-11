@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
                         .findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(botNav, navController);
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             String CHANNEL_ID = "Channel 1";
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+
         FirebaseMessaging.getInstance().subscribeToTopic("news").addOnCompleteListener(new OnCompleteListener<Void>()
         {
             @Override

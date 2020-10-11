@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.R;
@@ -23,11 +24,13 @@ import java.util.List;
 
 public class PengembalianFragment extends Fragment
 {
-    RecyclerView recyclerView;
-    RecyclerViewAdapter pModel;
-    ArrayList<Buku> listKembali = new ListKembali().listKembali;
-    ArrayList<Buku> tempKembali;
-    FloatingActionButton remove;
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter pModel;
+    private ArrayList<Buku> listKembali = new ListKembali().listKembali;
+    private ArrayList<Buku> tempKembali;
+    private FloatingActionButton remove;
+    private SwipeRefreshLayout refreshLayout;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_pengembalian, container, false);
@@ -36,7 +39,9 @@ public class PengembalianFragment extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(pModel);
+        refreshLayout = root.findViewById(R.id.swipe_refresh_pengembalian);
         remove = root.findViewById(R.id.kembali_button);
+
         remove.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -54,6 +59,16 @@ public class PengembalianFragment extends Fragment
                 }
             }
         });
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            @Override
+            public void onRefresh()
+            {
+                refreshLayout.setRefreshing(false);
+            }
+        });
+
         return root;
     }
 

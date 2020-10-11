@@ -23,12 +23,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 {
     private Context context;
     private List<Buku> result;
-    AdapterRecyclerViewBinding binding;
+    private AdapterRecyclerViewBinding binding;
     private FloatingActionButton add;
     private FloatingActionButton remove;
     private ArrayList<Buku> bukuList = new ArrayList<Buku>();
-
-    public RecyclerViewAdapter(){}
 
     public RecyclerViewAdapter(Context context, List<Buku> result)
     {

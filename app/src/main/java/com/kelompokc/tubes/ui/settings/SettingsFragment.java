@@ -37,7 +37,7 @@ public class SettingsFragment extends Fragment
     private MaterialButton exitBtn;
     private MaterialButton aboutBtn;
 
-    public boolean switchOnOff;
+    private boolean switchOnOff;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {

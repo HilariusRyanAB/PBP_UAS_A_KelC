@@ -18,6 +18,7 @@ public class SplashSreenActivity extends AppCompatActivity
     private static int SPLASH_ANIMATION = 3000;
     private boolean aBoolean;
     private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

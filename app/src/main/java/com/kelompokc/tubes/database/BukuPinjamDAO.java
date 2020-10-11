@@ -4,7 +4,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import com.kelompokc.tubes.model.Buku;
 
@@ -19,9 +18,6 @@ public interface BukuPinjamDAO
     @Insert
     void insert(Buku buku);
 
-    @Update
-    void update(Buku buku);
-
-    @Delete
-    void delete(Buku buku);
+    @Query("DELETE FROM Buku WHERE no_seri = :noSeri")
+    abstract void delete(String noSeri);
 }

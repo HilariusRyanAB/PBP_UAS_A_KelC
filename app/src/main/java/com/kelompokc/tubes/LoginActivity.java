@@ -32,17 +32,20 @@ public class LoginActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         firebaseAuth = FirebaseAuth.getInstance();
+
         if(firebaseAuth.getCurrentUser() != null)
         {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         emailInput = findViewById(R.id.input_email);
         passInput = findViewById(R.id.input_password);
         btnSignUp = findViewById(R.id.btnSignUp);
         btnSignIn = findViewById(R.id.btnSignIn);
+
         btnSignUp.setOnClickListener(new View.OnClickListener()
         {
             @Override

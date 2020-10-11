@@ -7,32 +7,33 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class QRBarcodeActivity extends AppCompatActivity implements View.OnClickListener {
-
-    Button scanbtn;
+public class QRBarcodeActivity extends AppCompatActivity implements View.OnClickListener
+{
+    private MaterialButton scanbtn;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_r_barcode);
-
         scanbtn = findViewById(R.id.startScanBtn);
         scanbtn.setOnClickListener(this);
-
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         scanCode();
     }
 
-    private void scanCode() {
+    private void scanCode()
+    {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setCaptureActivity(ScanBarcode.class);
         integrator.setOrientationLocked(false);
@@ -42,31 +43,42 @@ public class QRBarcodeActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
-    protected  void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected  void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null){
-            if (result.getContents() != null){
+        if (result != null)
+        {
+            if (result.getContents() != null)
+            {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(result.getContents());
                 builder.setTitle("Scanning Result");
-                builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Scan Again", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
                         scanCode();
                     }
-                }).setNegativeButton("Finish", new DialogInterface.OnClickListener() {
+                }).setNegativeButton("Finish", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
                         finish();
                     }
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
-            } else {
+            }
+            else
+            {
                 Toast.makeText(this, "No Result", Toast.LENGTH_SHORT).show();
             }
-        } else {
+        }
+        else
+        {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
