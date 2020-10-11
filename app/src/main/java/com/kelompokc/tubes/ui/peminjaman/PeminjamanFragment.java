@@ -40,17 +40,17 @@ public class PeminjamanFragment extends Fragment
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        final View root = inflater.inflate(R.layout.fragment_peminjaman, container, false);
+        View root = inflater.inflate(R.layout.fragment_peminjaman, container, false);
         recyclerView = root.findViewById(R.id.recycler_view_peminjaman);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         refreshLayout = root.findViewById(R.id.swipe_refresh);
         scan = root.findViewById(R.id.button_qr);
-        //addBukuAll();
-        //addBukuSample();
-        //deleteBukuAll(tempList);
-        getBuku();
         add = root.findViewById(R.id.button_pinjam);
+
+        //addBukuPinjamAll();
+        //deleteBukuPinjamAll(tempList);
+        getBukuPinjam();
 
         add.setOnClickListener(new View.OnClickListener()
         {
@@ -84,7 +84,7 @@ public class PeminjamanFragment extends Fragment
             @Override
             public void onRefresh()
             {
-                getBuku();
+                getBukuPinjam();
                 refreshLayout.setRefreshing(false);
             }
         });
@@ -92,7 +92,7 @@ public class PeminjamanFragment extends Fragment
         return root;
     }
 
-    private void getDialog(CharSequence[] a, int size, ArrayList<Buku> tempBuku)
+    private void getDialog(CharSequence[] a, int size, final ArrayList<Buku> tempBuku)
     {
         String temp = "";
 
@@ -113,8 +113,7 @@ public class PeminjamanFragment extends Fragment
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i)
                 {
-                    Toast.makeText(getContext(), "Masuk", Toast.LENGTH_SHORT).show();
-                    deleteBukuPinjam(tempPinjam);
+                    updateStatusPinjam(tempBuku);
                 }
             })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
@@ -122,6 +121,7 @@ public class PeminjamanFragment extends Fragment
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i)
                 {
+
                 }
             }).create().show();
     }
@@ -138,36 +138,7 @@ public class PeminjamanFragment extends Fragment
         return strings;
     }
 
-    public void deleteBukuPinjam(final ArrayList<Buku> tempBuku)
-    {
-        class deleteBuku extends AsyncTask<Void, Void, Void>
-        {
-            @Override
-            protected Void doInBackground(Void... voids)
-            {
-                for(int i = 0; i<tempBuku.size(); i++)
-                {
-                    DatabaseClient
-                            .getInstance(getContext())
-                            .getDatabase()
-                            .bukuPinjamDAO()
-                            .delete(tempBuku.get(i).getNoSeri());
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid)
-            {
-                super.onPostExecute(aVoid);
-                Toast.makeText(getContext(), "Buku Berhasil Dipinjam", Toast.LENGTH_SHORT).show();
-            }
-        }
-        deleteBuku buku = new deleteBuku();
-        buku.execute();
-    }
-
-    public void getBuku()
+    public void getBukuPinjam()
     {
         class getBuku extends AsyncTask<Void, Void, List<Buku>>
         {
@@ -177,8 +148,8 @@ public class PeminjamanFragment extends Fragment
                 List<Buku> bukuList = DatabaseClient
                         .getInstance(getContext())
                         .getDatabase()
-                        .bukuPinjamDAO()
-                        .getAll();
+                        .bukuDAO()
+                        .getAll("tersedia");
                 return bukuList;
             }
 
@@ -198,42 +169,16 @@ public class PeminjamanFragment extends Fragment
         get.execute();
     }
 
-    public void addBukuSample()
+    public void addBukuPinjamAll()
     {
         class addBuku extends AsyncTask<Void, Void, Void>
         {
             @Override
             protected Void doInBackground(Void... voids)
             {
-                Buku buku = new Buku("The Guest List"
-                        , "Thriller"
-                        , "H-0008"
-                        , "https://images-na.ssl-images-amazon.com/images/I/81jHvrCW9yL.jpg");
-                    DatabaseClient.getInstance(getContext()).getDatabase().bukuPinjamDAO().insert(buku);
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid)
-            {
-                super.onPostExecute(aVoid);
-                Toast.makeText(getContext(),"Add Buku Successful", Toast.LENGTH_SHORT).show();
-            }
-        }
-        addBuku get = new addBuku();
-        get.execute();
-    }
-
-    public void addBukuAll()
-    {
-        class addBuku extends AsyncTask<Void, Void, Void>
-        {
-            @Override
-            protected Void doInBackground(Void... voids)
-            {
-                for(int i = 0; i <= tempList.size(); i++)
+                for(int i = 0; i < tempList.size(); i++)
                 {
-                    DatabaseClient.getInstance(getContext()).getDatabase().bukuPinjamDAO().insert(tempList.get(i));
+                    DatabaseClient.getInstance(getContext()).getDatabase().bukuDAO().insert(tempList.get(i));
                 }
                 return null;
             }
@@ -249,19 +194,19 @@ public class PeminjamanFragment extends Fragment
         get.execute();
     }
 
-    public void deleteBukuAll(final ArrayList<Buku> tempList)
+    public void deleteBukuPinjamAll(final ArrayList<Buku> tempList)
     {
         class deleteBuku extends AsyncTask<Void, Void, Void>
         {
             @Override
             protected Void doInBackground(Void... voids)
             {
-                for(int i = 0; i<tempList.size(); i++)
+                for(int i = 0; i < tempList.size(); i++)
                 {
                     DatabaseClient
                             .getInstance(getContext())
                             .getDatabase()
-                            .bukuPinjamDAO()
+                            .bukuDAO()
                             .delete(tempList.get(i).getNoSeri());
                 }
                 return null;
@@ -276,5 +221,34 @@ public class PeminjamanFragment extends Fragment
         }
         deleteBuku buku = new deleteBuku();
         buku.execute();
+    }
+
+    public void updateStatusPinjam(final ArrayList<Buku> tempList)
+    {
+        class updateStatusPinjam extends AsyncTask<Void, Void, Void>
+        {
+            @Override
+            protected Void doInBackground(Void... voids)
+            {
+                for (int i = 0; i < tempList.size(); i++)
+                {
+                    DatabaseClient
+                            .getInstance(getContext())
+                            .getDatabase()
+                            .bukuDAO()
+                            .updateStatus("dipinjam", tempList.get(i).getNoSeri());
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid)
+            {
+                super.onPostExecute(aVoid);
+                Toast.makeText(getContext(), "Buku Berhasil Dipinjam", Toast.LENGTH_SHORT).show();
+            }
+        }
+        updateStatusPinjam status = new updateStatusPinjam();
+        status.execute();
     }
 }

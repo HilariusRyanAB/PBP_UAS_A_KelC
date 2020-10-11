@@ -29,12 +29,16 @@ public class Buku implements Serializable
     @ColumnInfo(name = "img_url")
     private String imgURL;
 
-    public Buku(String judul, String genre, String noSeri, String imgURL)
+    @ColumnInfo(name = "status")
+    private String status;
+
+    public Buku(String judul, String genre, String noSeri, String imgURL, String status)
     {
         this.judul = judul;
         this.genre = genre;
         this.noSeri = noSeri;
         this.imgURL = imgURL;
+        this.status = status;
     }
 
     public String getJudul() {
@@ -61,6 +65,11 @@ public class Buku implements Serializable
 
     public String getImgURL() {
         return imgURL;
+    }
+
+    public String getStatus()
+    {
+        return status;
     }
 
     @BindingAdapter({"profileImage"})

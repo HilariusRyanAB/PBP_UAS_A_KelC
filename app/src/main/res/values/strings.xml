@@ -33,4 +33,6 @@
     <string name="exit">Exit</string>
     <string name="night_mode">Night Mode</string>
     <string name="tampilan_background">Tampilan Background</string>
+    <string name="atma_library">Atma Library</string>
+    <string name="scan">Scan Now</string>
 </resources>

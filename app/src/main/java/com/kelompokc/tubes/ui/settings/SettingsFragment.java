@@ -36,7 +36,6 @@ public class SettingsFragment extends Fragment
     private SwitchMaterial myswitch;
     private MaterialButton exitBtn;
     private MaterialButton aboutBtn;
-
     private boolean switchOnOff;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -125,11 +124,11 @@ public class SettingsFragment extends Fragment
 
     public void aboutUsDialog()
     {
-        new AlertDialog.Builder(getContext()).setTitle("Atma Perpus")
-                .setMessage("Sebuah aplikasi yang akan membantu anda untuk mempermudah meminjam buku di perpustakan " +
-                        "Atma Perpus dengan fitur yang memadai mempermudah peminjaman dan pengembalian buku "
-                        +"dengan sistem yang mudah digunakan untuk siapa saja.")
-                .setNegativeButton("Back", new DialogInterface.OnClickListener()
+        new AlertDialog.Builder(getContext()).setTitle("Atma Library")
+                .setMessage("Sebuah aplikasi yang akan membantu anda untuk mempermudah meminjam buku di perpustakan.\n\n" +
+                        "Atma Library dengan fitur yang memadai mempermudah peminjaman dan pengembalian buku bagi seluruh mahasiswa.\n\n"
+                        +"Atma Library juga hadir dengan sistem yang mudah digunakan untuk siapa saja.")
+                .setNegativeButton("Close", new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
