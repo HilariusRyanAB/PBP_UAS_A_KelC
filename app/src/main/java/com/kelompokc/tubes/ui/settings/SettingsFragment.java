@@ -34,8 +34,8 @@ public class SettingsFragment extends Fragment
 
     private MaterialButton logOutBtn;
     private SwitchMaterial myswitch;
-    private MaterialButton exitBtn;
     private MaterialButton aboutBtn;
+    private MaterialButton map;
     private boolean switchOnOff;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -43,6 +43,28 @@ public class SettingsFragment extends Fragment
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
         myswitch = (SwitchMaterial) root.findViewById(R.id.myswitch);
+        logOutBtn = root.findViewById(R.id.button_logOut);
+        aboutBtn = root.findViewById(R.id.button_aboutUs);
+        map = root.findViewById(R.id.button_map);
+
+        logOutBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                logOutDialog();
+            }
+        });
+
+        aboutBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                aboutUsDialog();
+            }
+        });
+
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
@@ -63,36 +85,6 @@ public class SettingsFragment extends Fragment
             }
         });
 
-        logOutBtn = root.findViewById(R.id.button_logOut);
-        logOutBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                logOutDialog();
-            }
-        });
-
-        exitBtn = root.findViewById(R.id.button_exit);
-        exitBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                getActivity().finish();
-                System.exit(0);
-            }
-        });
-
-        aboutBtn = root.findViewById(R.id.button_aboutUs);
-        aboutBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                aboutUsDialog();
-            }
-        });
         loadData();
         return root;
     }

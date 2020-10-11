@@ -55,8 +55,17 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:text="@string/location"
+        android:gravity="center"
+        android:id="@+id/button_map"
+        android:layout_marginTop="380dp"
+        android:layout_centerHorizontal="true"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="290dp"
+        android:layout_marginTop="440dp"
         android:gravity="center"
         android:text="@string/about_us"
         android:id="@+id/button_aboutUs"/>
@@ -66,18 +75,8 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="500dp"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/logout" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_exit"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="410dp"
-        android:backgroundTint="@color/colorAccent"
-        android:text="@string/exit" />
 
 </RelativeLayout>

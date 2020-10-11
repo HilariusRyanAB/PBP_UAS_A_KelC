@@ -35,4 +35,5 @@
     <string name="tampilan_background">Tampilan Background</string>
     <string name="atma_library">Atma Library</string>
     <string name="scan">Scan Now</string>
+    <string name="location">LOCATION</string>
 </resources>
