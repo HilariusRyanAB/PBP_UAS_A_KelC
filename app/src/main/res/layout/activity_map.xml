@@ -14,7 +14,7 @@
         app:mapbox_cameraTargetLng="-122.4149"
         app:mapbox_cameraZoom="8"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/startButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

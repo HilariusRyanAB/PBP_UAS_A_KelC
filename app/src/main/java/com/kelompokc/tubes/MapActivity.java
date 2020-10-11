@@ -8,13 +8,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -65,7 +62,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private MapboxMap mapboxMap;
     private MapView mapView;
     private Point origin, destination;
-    private Button startNavBtn;
+    private MaterialButton startNavBtn;
     private NavigationMapRoute navigationMapRoute;
     private DirectionsRoute route;
     private Marker destinationMarker;
