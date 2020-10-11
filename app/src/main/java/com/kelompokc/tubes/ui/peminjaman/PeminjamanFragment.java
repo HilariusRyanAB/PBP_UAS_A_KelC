@@ -36,7 +36,6 @@ public class PeminjamanFragment extends Fragment
     private ImageView scan;
     private ArrayList<Buku> tempPinjam = new ArrayList<>();
     private ArrayList<Buku> tempList = new ListPinjam().listPinjam;
-    private SwipeRefreshLayout refreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -44,11 +43,9 @@ public class PeminjamanFragment extends Fragment
         recyclerView = root.findViewById(R.id.recycler_view_peminjaman);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        refreshLayout = root.findViewById(R.id.swipe_refresh);
         scan = root.findViewById(R.id.button_qr);
         add = root.findViewById(R.id.button_pinjam);
 
-        //addBukuPinjamAll();
         //deleteBukuPinjamAll(tempList);
         getBukuPinjam();
 
@@ -76,16 +73,6 @@ public class PeminjamanFragment extends Fragment
             public void onClick(View view)
             {
                 startActivity(new Intent(getContext(), QRBarcodeActivity.class));
-            }
-        });
-
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
-            @Override
-            public void onRefresh()
-            {
-                getBukuPinjam();
-                refreshLayout.setRefreshing(false);
             }
         });
 
@@ -161,7 +148,8 @@ public class PeminjamanFragment extends Fragment
                 recyclerView.setAdapter(pModel);
                 if (tempBuku.isEmpty())
                 {
-                    Toast.makeText(getContext(), "Empty List", Toast.LENGTH_SHORT).show();
+                    addBukuPinjamAll();
+                    getBukuPinjam();
                 }
             }
         }
@@ -187,7 +175,6 @@ public class PeminjamanFragment extends Fragment
             protected void onPostExecute(Void aVoid)
             {
                 super.onPostExecute(aVoid);
-                Toast.makeText(getContext(),"Add All Buku Successful", Toast.LENGTH_SHORT).show();
             }
         }
         addBuku get = new addBuku();
@@ -246,6 +233,7 @@ public class PeminjamanFragment extends Fragment
             {
                 super.onPostExecute(aVoid);
                 Toast.makeText(getContext(), "Buku Berhasil Dipinjam", Toast.LENGTH_SHORT).show();
+                getBukuPinjam();
             }
         }
         updateStatusPinjam status = new updateStatusPinjam();

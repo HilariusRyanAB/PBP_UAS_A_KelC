@@ -23,6 +23,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 {
     private Context context;
     private List<Buku> result;
+    private int check=0;
+    private boolean b;
     private AdapterRecyclerViewBinding binding;
     private FloatingActionButton add;
     private FloatingActionButton remove;
@@ -63,13 +65,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View view)
             {
                 holder.itemCard.setChecked(!holder.itemCard.isChecked());
-                if(holder.itemCard.isChecked()==true)
+                if(holder.itemCard.isChecked())
                 {
-                    setAddOrRemove(holder.getAdapterPosition(), 1);
+                    check++;
+                    b = true;
                 }
                 else
                 {
-                    setAddOrRemove(holder.getAdapterPosition(), 0);
+                    check--;
+                    b = false;
+                }
+                if(check<=2)
+                {
+                    setAddOrRemove(holder.getAdapterPosition(), b);
+                }
+                else
+                {
+                    Toast.makeText(context, "Maaf Maksimal 2 Setiap Transaksi", Toast.LENGTH_SHORT).show();
+                    holder.itemCard.setChecked(false);
+                    check--;
                 }
             }
         });
@@ -97,9 +111,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    private void setAddOrRemove(int index, int Status)
+    private void setAddOrRemove(int index, boolean b)
     {
-        if(Status==1)
+        if(b)
         {
             bukuList.add(result.get(index));
         }

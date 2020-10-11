@@ -32,7 +32,6 @@ public class PengembalianFragment extends Fragment
     private ArrayList<Buku> tempList = new ListKembali().listKembali;
     private ArrayList<Buku> tempKembali;
     private FloatingActionButton remove;
-    private SwipeRefreshLayout refreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -40,7 +39,6 @@ public class PengembalianFragment extends Fragment
         recyclerView = root.findViewById(R.id.recycler_view_pengembalian);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        refreshLayout = root.findViewById(R.id.swipe_refresh_pengembalian);
         remove = root.findViewById(R.id.kembali_button);
 
         //addBukuKembaliAll();
@@ -62,16 +60,6 @@ public class PengembalianFragment extends Fragment
                     CharSequence [] title = getStringArray(tempKembali);
                     showDialog(title, tempKembali.size(), tempKembali);
                 }
-            }
-        });
-
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
-            @Override
-            public void onRefresh()
-            {
-                refreshLayout.setRefreshing(false);
-                getBukuKembali();
             }
         });
 
@@ -142,7 +130,6 @@ public class PengembalianFragment extends Fragment
             protected void onPostExecute(Void aVoid)
             {
                 super.onPostExecute(aVoid);
-                Toast.makeText(getContext(),"Add All Buku Successful", Toast.LENGTH_SHORT).show();
             }
         }
         addBuku get = new addBuku();
@@ -172,7 +159,8 @@ public class PengembalianFragment extends Fragment
                 recyclerView.setAdapter(pModel);
                 if (tempBuku.isEmpty())
                 {
-                    Toast.makeText(getContext(), "Empty List", Toast.LENGTH_SHORT).show();
+                    addBukuKembaliAll();
+                    getBukuKembali();
                 }
             }
         }
@@ -232,6 +220,7 @@ public class PengembalianFragment extends Fragment
             {
                 super.onPostExecute(aVoid);
                 Toast.makeText(getContext(), "Buku Berhasil Dikembalikan", Toast.LENGTH_SHORT).show();
+                getBukuKembali();
             }
         }
         updateStatusKembali status = new updateStatusKembali();

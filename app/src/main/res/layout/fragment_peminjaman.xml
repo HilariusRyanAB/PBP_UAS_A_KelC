@@ -19,20 +19,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_height="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_peminjaman"
         app:layout_constraintTop_toBottomOf="@+id/title_buku"
         android:layout_below="@+id/title_buku"
-        android:id="@+id/swipe_refresh"
-        android:layout_width="wrap_content">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_peminjaman"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/adapter_recycler_view" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/adapter_recycler_view" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/button_qr"
