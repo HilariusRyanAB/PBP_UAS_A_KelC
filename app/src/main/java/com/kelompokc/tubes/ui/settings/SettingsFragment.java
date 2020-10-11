@@ -24,6 +24,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
+import com.kelompokc.tubes.MapActivity;
+import com.kelompokc.tubes.QRBarcodeActivity;
 import com.kelompokc.tubes.R;
 
 public class SettingsFragment extends Fragment
@@ -82,6 +84,13 @@ public class SettingsFragment extends Fragment
 
                 }
                 saveData(b);
+            }
+        });
+
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), MapActivity.class));
             }
         });
 

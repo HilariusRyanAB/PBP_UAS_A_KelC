@@ -36,4 +36,7 @@
     <string name="atma_library">Atma Library</string>
     <string name="scan">Scan Now</string>
     <string name="location">LOCATION</string>
+
+    <!-- Map Preferencess -->
+    <string name="mapbox_access_token">pk.eyJ1IjoibmljZWRzb24yMyIsImEiOiJja2ZtMjV2YTQxYmhpMzBvMDdkYWRreWZqIn0.2pOKmyQUat_aCBT8ENz0hw</string>
 </resources>
