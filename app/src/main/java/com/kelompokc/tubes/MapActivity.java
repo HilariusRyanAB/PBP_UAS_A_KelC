@@ -276,7 +276,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void getRoute(Point origin, Point destination)
     {
-        startNavBtn.setEnabled(true);
         NavigationRoute.builder(getApplicationContext())
                 .accessToken(Mapbox.getAccessToken()).origin(origin).destination(destination).build()
                 .getRoute(new Callback<DirectionsResponse>()
