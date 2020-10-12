@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, peminjamanF).commit();
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE)
         {
             String CHANNEL_ID = "Channel 1";
             CharSequence name = "Channel 1";

@@ -26,7 +26,7 @@ android {
         dataBinding true
     }
 
-    compileOptions{
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -61,7 +61,7 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     //Mapbox
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.2.0'
-    implementation ('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6')
+    implementation('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6')
             {
                 transitive = true;
             }
