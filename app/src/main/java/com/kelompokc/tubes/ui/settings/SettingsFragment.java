@@ -39,6 +39,7 @@ public class SettingsFragment extends Fragment
     private MaterialButton map;
     private boolean switchOnOff;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
@@ -47,6 +48,27 @@ public class SettingsFragment extends Fragment
         logOutBtn = root.findViewById(R.id.button_logOut);
         aboutBtn = root.findViewById(R.id.button_aboutUs);
         map = root.findViewById(R.id.button_map);
+
+        loadData();
+
+        myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+            {
+                if(b)
+                {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    getContext().setTheme(R.style.darkTheme);
+                }
+                else
+                {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    getContext().setTheme(R.style.AppTheme);
+                }
+                saveData();
+            }
+        });
 
         logOutBtn.setOnClickListener(new View.OnClickListener()
         {
@@ -66,26 +88,6 @@ public class SettingsFragment extends Fragment
             }
         });
 
-        myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
-            {
-                if(b)
-                {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    getActivity().getApplicationContext().setTheme(R.style.AppTheme);
-                }
-                else
-                {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    getActivity().getApplicationContext().setTheme(R.style.AppTheme);
-
-                }
-                saveData(b);
-            }
-        });
-
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,7 +95,6 @@ public class SettingsFragment extends Fragment
             }
         });
 
-        loadData();
         return root;
     }
 
@@ -161,18 +162,26 @@ public class SettingsFragment extends Fragment
         manager.notify(0, builder.build());
     }
 
-    public void saveData(boolean b)
+    public void saveData()
     {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SWITCH1, b);
-        editor.apply();
+        editor.putBoolean(SWITCH1, myswitch.isChecked());
+        editor.commit();
     }
 
     public void loadData()
     {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
         switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
+        if(switchOnOff)
+        {
+            getContext().setTheme(R.style.darkTheme);
+        }
+        else
+        {
+            getContext().setTheme(R.style.AppTheme);
+        }
         myswitch.setChecked(switchOnOff);
     }
 }

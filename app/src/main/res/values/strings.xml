@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tubes</string>
+    <string name="app_name">Atma Library</string>
     <string name="peminjaman">Peminjaman</string>
     <string name="pengembalian">Pengembalian</string>
     <string name="settings">Settings</string>
