@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
@@ -67,10 +69,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private DirectionsRoute route;
     private Marker destinationMarker;
     private static final String TAG = "MapActivity";
+    private boolean aBoolean;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        sharedPreferences = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
+        aBoolean = sharedPreferences.getBoolean("switch1", false);
+
         super.onCreate(savedInstanceState);
 
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
@@ -185,19 +192,38 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     {
         this.mapboxMap = mapboxMap;
 
-        mapboxMap.setStyle(new Style.Builder().fromUri(Style.MAPBOX_STREETS),
-                new Style.OnStyleLoaded()
-                {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style)
+        if(aBoolean)
+        {
+            mapboxMap.setStyle(new Style.Builder().fromUri(Style.TRAFFIC_NIGHT),
+                    new Style.OnStyleLoaded()
                     {
-                        enableLocationComponent(style);
-                        initLayers(style);
-                        destinationMarker = mapboxMap.addMarker(new MarkerOptions().position(new LatLng(-7.7805141,110.4146317)));
-                        destination = Point.fromLngLat(110.4146317,-7.7805141);
-                        startNavBtn.setEnabled(true);
-                    }
-                });
+                        @Override
+                        public void onStyleLoaded(@NonNull Style style)
+                        {
+                            enableLocationComponent(style);
+                            initLayers(style);
+                            destinationMarker = mapboxMap.addMarker(new MarkerOptions().position(new LatLng(-7.7805141,110.4146317)));
+                            destination = Point.fromLngLat(110.4146317,-7.7805141);
+                            startNavBtn.setEnabled(true);
+                        }
+                    });
+        }
+        else
+        {
+            mapboxMap.setStyle(new Style.Builder().fromUri(Style.TRAFFIC_DAY),
+                    new Style.OnStyleLoaded()
+                    {
+                        @Override
+                        public void onStyleLoaded(@NonNull Style style)
+                        {
+                            enableLocationComponent(style);
+                            initLayers(style);
+                            destinationMarker = mapboxMap.addMarker(new MarkerOptions().position(new LatLng(-7.7805141,110.4146317)));
+                            destination = Point.fromLngLat(110.4146317,-7.7805141);
+                            startNavBtn.setEnabled(true);
+                        }
+                    });
+        }
     }
 
     @SuppressLint("MissingPermission")
