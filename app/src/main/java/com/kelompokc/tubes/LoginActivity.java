@@ -24,9 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity
 {
     private String CHANNEL_ID="Channel 1";
-    FirebaseAuth firebaseAuth;
-    EditText emailInput, passInput;
-    Button btnSignUp, btnSignIn;
+    private FirebaseAuth firebaseAuth;
+    private EditText emailInput, passInput;
+    private Button btnSignUp, btnSignIn;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity
                                 createNotificationChannel();
                                 addNotification();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                finish();
                             }
                             else
                             {
@@ -96,6 +97,7 @@ public class LoginActivity extends AppCompatActivity
                                 createNotificationChannel();
                                 addNotification();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                finish();
                             }
                             else
                             {
@@ -125,7 +127,7 @@ public class LoginActivity extends AppCompatActivity
     private void addNotification()
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID).setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Hello").setContentText("Welcome Back, Please Enjoy Your Stay...").setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setContentTitle("Hello").setContentText("Welcome to Atma Library, Please Enjoy Your Stay...").setPriority(NotificationCompat.PRIORITY_DEFAULT);
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);

@@ -27,6 +27,7 @@ import com.kelompokc.tubes.LoginActivity;
 import com.kelompokc.tubes.MainActivity;
 import com.kelompokc.tubes.MapActivity;
 import com.kelompokc.tubes.R;
+import com.kelompokc.tubes.SplashSreenActivity;
 
 public class SettingsFragment extends Fragment
 {
@@ -71,9 +72,8 @@ public class SettingsFragment extends Fragment
                     getContext().setTheme(R.style.AppTheme);
                 }
 
+                startActivity(new Intent(root.getContext(), MainActivity.class));
                 getActivity().finish();
-                getActivity().overridePendingTransition(0, 0);
-                startActivity(new Intent(getContext(), MainActivity.class));
             }
         });
 
@@ -107,7 +107,7 @@ public class SettingsFragment extends Fragment
 
     public void logOutDialog()
     {
-        new AlertDialog.Builder(getContext()).setTitle("Log Out").setMessage("Are You Sure?")
+        new AlertDialog.Builder(getContext()).setTitle("Log Out").setMessage("Are You Sure?\nIf You Log Out You Will Exit This App")
                 .setPositiveButton("Log Out", new DialogInterface.OnClickListener()
                 {
                     @Override
@@ -116,7 +116,8 @@ public class SettingsFragment extends Fragment
                         FirebaseAuth.getInstance().signOut();
                         createNotificationChannel();
                         addNotification();
-                        startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
+                        getActivity().finish();
+                        startActivity(new Intent(getContext(), SplashSreenActivity.class));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
@@ -162,7 +163,7 @@ public class SettingsFragment extends Fragment
     private void addNotification()
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID).setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("Goodbye").setContentText("Comeback Again...").setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setContentTitle("Goodbye").setContentText("Please Comeback Again...").setPriority(NotificationCompat.PRIORITY_DEFAULT);
         Intent notificationIntent = new Intent(getContext(), LoginActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
