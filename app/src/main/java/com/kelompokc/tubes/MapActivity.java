@@ -9,9 +9,12 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -63,6 +66,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private MapView mapView;
     private Point origin, destination;
     private MaterialButton startNavBtn;
+    private ShapeableImageView imageMap;
     private NavigationMapRoute navigationMapRoute;
     private DirectionsRoute route;
     private Marker destinationMarker;
@@ -76,11 +80,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
 
         setContentView(R.layout.activity_map);
-
+        imageMap = findViewById(R.id.location_image);
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         startNavBtn = findViewById(R.id.startButton);
+        Glide.with(imageMap)
+                .load("https://lh3.googleusercontent.com/proxy/eixjzN-_4x2TbEqY4J4UH8B1a3FB9-cuS2Y9_8L1BTpUmgvlwC23wdmhGGexrgFzxYs0Wqo4zw4yvfJOE-dCrbo-aQVxLtx7-G6JASneChIF2IQd")
+                .into(imageMap);
 
         startNavBtn.setOnClickListener(new View.OnClickListener()
         {
