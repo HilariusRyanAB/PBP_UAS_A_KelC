@@ -85,7 +85,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapView.getMapAsync(this);
         startNavBtn = findViewById(R.id.startButton);
         Glide.with(imageMap)
-                .load("https://lh3.googleusercontent.com/proxy/eixjzN-_4x2TbEqY4J4UH8B1a3FB9-cuS2Y9_8L1BTpUmgvlwC23wdmhGGexrgFzxYs0Wqo4zw4yvfJOE-dCrbo-aQVxLtx7-G6JASneChIF2IQd")
+                .load("http://www.uajy.ac.id/international-affairs/wp-content/uploads/sites/6/2016/08/IMG_4753.jpg")
                 .into(imageMap);
 
         startNavBtn.setOnClickListener(new View.OnClickListener()
