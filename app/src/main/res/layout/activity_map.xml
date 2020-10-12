@@ -26,6 +26,7 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="100dp"
                 android:id="@+id/location_image"
+                android:src="@drawable/perpust"
                 android:layout_height="100dp">
             </com.google.android.material.imageview.ShapeableImageView>
         </LinearLayout>
