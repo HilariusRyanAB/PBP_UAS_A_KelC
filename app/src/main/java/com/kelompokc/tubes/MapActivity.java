@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -65,7 +66,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private MapboxMap mapboxMap;
     private MapView mapView;
     private Point origin, destination;
-    private MaterialButton startNavBtn;
+    private FloatingActionButton startNavBtn;
     private ShapeableImageView imageMap;
     private NavigationMapRoute navigationMapRoute;
     private DirectionsRoute route;
@@ -277,6 +278,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void getRoute(Point origin, Point destination)
     {
+        startNavBtn.setEnabled(true);
         NavigationRoute.builder(getApplicationContext())
                 .accessToken(Mapbox.getAccessToken()).origin(origin).destination(destination).build()
                 .getRoute(new Callback<DirectionsResponse>()

@@ -10,7 +10,8 @@
         android:text="@string/our_location"
         android:textAlignment="center"
         android:id="@+id/desc_activity"
-        android:textSize="20dp"/>
+        android:textStyle="bold"
+        android:textSize="25dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,8 +32,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="29dp">
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,12 +79,14 @@
                     android:text="@string/jadwal"
                     android:textSize="14dp"
                     android:textStyle="bold"/>
+
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginLeft="7dp"
                     android:text="@string/hari_jam"
-                    android:textSize="12dp"/>
+                    android:textSize="12dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -96,16 +100,16 @@
         app:mapbox_cameraTargetLng="-122.4149"
         app:mapbox_cameraZoom="8">
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/startButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="bottom|end"
             android:layout_margin="20dp"
             android:background="@color/mapboxGrayLight"
             android:enabled="false"
-            android:text="@string/start_navigation"
-            android:textColor="@color/mapboxWhite"
+            android:src="@drawable/ic_navigation"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toEndOf="@id/mapView"
             app:layout_constraintTop_toTopOf="@id/mapView" />
     </com.mapbox.mapboxsdk.maps.MapView>
