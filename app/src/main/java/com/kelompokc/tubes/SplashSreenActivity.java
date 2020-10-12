@@ -23,6 +23,7 @@ public class SplashSreenActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         sharedPreferences  = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
+
         if(sharedPreferences!=null)
         {
             aBoolean = sharedPreferences.getBoolean("switch1", false);
@@ -37,6 +38,7 @@ public class SplashSreenActivity extends AppCompatActivity
                 getApplicationContext().setTheme(R.style.AppTheme);
             }
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_sreen);
         Animation splashAnim = AnimationUtils.loadAnimation(this, R.anim.animasi);

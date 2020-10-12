@@ -24,6 +24,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
+import com.kelompokc.tubes.MainActivity;
 import com.kelompokc.tubes.MapActivity;
 import com.kelompokc.tubes.R;
 
@@ -56,17 +57,23 @@ public class SettingsFragment extends Fragment
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b)
             {
+                saveData(b);
+
                 if(b)
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     getContext().setTheme(R.style.darkTheme);
                 }
+
                 else
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     getContext().setTheme(R.style.AppTheme);
                 }
-                saveData();
+
+                getActivity().finish();
+                getActivity().overridePendingTransition(0, 0);
+                startActivity(new Intent(getContext(), MainActivity.class));
             }
         });
 
@@ -133,6 +140,7 @@ public class SettingsFragment extends Fragment
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
+
                     }
                 }).create().show();
     }
@@ -162,11 +170,11 @@ public class SettingsFragment extends Fragment
         manager.notify(0, builder.build());
     }
 
-    public void saveData()
+    public void saveData(boolean selected)
     {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SWITCH1, myswitch.isChecked());
+        editor.putBoolean(SWITCH1, selected);
         editor.commit();
     }
 
@@ -178,10 +186,12 @@ public class SettingsFragment extends Fragment
         {
             getContext().setTheme(R.style.darkTheme);
         }
+
         else
         {
             getContext().setTheme(R.style.AppTheme);
         }
+
         myswitch.setChecked(switchOnOff);
     }
 }

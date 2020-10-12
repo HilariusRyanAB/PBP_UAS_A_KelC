@@ -2,6 +2,8 @@ package com.kelompokc.tubes;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import com.kelompokc.tubes.ui.settings.SettingsFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 public class MainActivity extends AppCompatActivity
@@ -23,14 +26,32 @@ public class MainActivity extends AppCompatActivity
     private Fragment peminjamanF = new PeminjamanFragment();
     private Fragment pengembalianF = new PengembalianFragment();
     private Fragment settingsF = new SettingsFragment();
+    private boolean aBoolean;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        sharedPreferences  = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
+
+        if(sharedPreferences!=null)
+        {
+            aBoolean = sharedPreferences.getBoolean("switch1", false);
+            if(aBoolean)
+            {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                getApplicationContext().setTheme(R.style.darkTheme);
+            }
+            else
+            {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                getApplicationContext().setTheme(R.style.AppTheme);
+            }
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView botNav = findViewById(R.id.nav_view);
-        botNav.setSelectedItemId(R.id.navigation_peminjaman);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, peminjamanF).commit();
 
