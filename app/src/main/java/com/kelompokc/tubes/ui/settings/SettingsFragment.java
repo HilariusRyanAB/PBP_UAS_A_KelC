@@ -107,7 +107,7 @@ public class SettingsFragment extends Fragment
 
     public void logOutDialog()
     {
-        new AlertDialog.Builder(getContext()).setTitle("Log Out").setMessage("Are You Sure?\nIf You Log Out You Will Exit This App")
+        new AlertDialog.Builder(getContext()).setTitle("Log Out").setMessage("Are You Sure?")
                 .setPositiveButton("Log Out", new DialogInterface.OnClickListener()
                 {
                     @Override
