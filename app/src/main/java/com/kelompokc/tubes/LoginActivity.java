@@ -1,14 +1,16 @@
 package com.kelompokc.tubes;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -16,25 +18,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.kelompokc.tubes.API.UserAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.android.volley.Request.Method.POST;
 
 public class LoginActivity extends AppCompatActivity
 {
+    public static final String SHARE_PREFS = "SharedPrefUser";
+    public static final String SAVE_ID = "idUser";
     private String CHANNEL_ID="Channel 1";
-    private FirebaseAuth firebaseAuth;
     private EditText emailInput, passInput;
     private Button btnSignUp, btnSignIn;
+    private int idUser;
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        firebaseAuth = FirebaseAuth.getInstance();
+        sharedPreferences  = getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
 
-        if(firebaseAuth.getCurrentUser() != null)
+        idUser = sharedPreferences.getInt("idUser", 0);
+
+        if(idUser!=0)
         {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
 
@@ -50,30 +68,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                String email = emailInput.getText().toString();
-                String pass = passInput.getText().toString();
-                if (cekData(email, pass))
-                {
-                    firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>()
-                    {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task)
-                        {
-                            if (task.isSuccessful())
-                            {
-                                Toast.makeText(getApplicationContext(), "SignUp Successful", Toast.LENGTH_SHORT).show();
-                                createNotificationChannel();
-                                addNotification();
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                finish();
-                            }
-                            else
-                            {
-                                Toast.makeText(getApplicationContext(), "Failed To Sign Up", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
+
             }
         });
 
@@ -84,28 +79,7 @@ public class LoginActivity extends AppCompatActivity
             {
                 String email = emailInput.getText().toString();
                 String pass = passInput.getText().toString();
-                if(cekData(email,pass))
-                {
-                    firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>()
-                    {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task)
-                        {
-                            if(task.isSuccessful())
-                            {
-                                Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                createNotificationChannel();
-                                addNotification();
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                finish();
-                            }
-                            else
-                            {
-                                Toast.makeText(getApplicationContext(), "Failed To Login", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
+                loginAccount(email, pass);
             }
         });
     }
@@ -135,35 +109,78 @@ public class LoginActivity extends AppCompatActivity
         manager.notify(0, builder.build());
     }
 
-    public Boolean cekData(String email, String pass)
+    public void loginAccount(String email, String password)
     {
-        if((!email.contains("@") || !email.contains(".")) || email.isEmpty())
+        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Login");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_LOGIN, new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        progressDialog.dismiss();
+                        try
+                        {
+                            JSONObject obj = new JSONObject(response);
+                            if(obj.getString("message").equals("Login Success"))
+                            {
+                                JSONObject userObj = obj.getJSONObject("user");
+                                saveID(userObj.getInt("id"));
+                                Toast.makeText(LoginActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                                createNotificationChannel();
+                                addNotification();
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            }
+                            else
+                            {
+                                Toast.makeText(getApplicationContext(), "Failed To Login", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                            }
+                            finish();
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener()
         {
-            if(email.isEmpty() && pass.isEmpty())
+            @Override
+            public void onErrorResponse(VolleyError error)
             {
-                Toast.makeText(getApplicationContext(),"Authentication Failed",Toast.LENGTH_SHORT).show();
-                return false;
+                progressDialog.dismiss();
+                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println(error.getMessage());
             }
-            else
-            {
-                Toast.makeText(getApplicationContext(), "Email Invalid", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        }
-        else
+        })
         {
-            if (pass.isEmpty())
+            @Override
+            protected Map<String, String> getParams()
             {
-                Toast.makeText(getApplicationContext(), "Please Enter Password", Toast.LENGTH_SHORT).show();
-                return false;
-            } else if (pass.length() < 6) {
-                Toast.makeText(getApplicationContext(), "Password too short", Toast.LENGTH_SHORT).show();
-                return false;
+                Map<String, String>  params = new HashMap<String, String>();
+
+                params.put("email", email);
+                params.put("password", password);
+
+                return params;
             }
-            else
-            {
-                return true;
-            }
-        }
+        };
+
+        queue.add(stringRequest);
+    }
+
+    public void saveID(int idUser)
+    {
+        SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(SHARE_PREFS, LoginActivity.this.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(SAVE_ID, idUser);
+        editor.commit();
     }
 }

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -32,15 +33,13 @@ import com.kelompokc.tubes.SplashSreenActivity;
 public class SettingsFragment extends Fragment
 {
     private String CHANNEL_ID="Channel 1";
-    public static final String SHARE_PREFS = "SharedPrefs";
-    public static final String SWITCH1 = "switch1";
+    public static final String SHARE_PREFS = "SharedPrefUser";
+    public static final String SAVE_ID = "idUser";
 
     private MaterialButton logOutBtn;
     private SwitchMaterial myswitch;
     private MaterialButton aboutBtn;
     private MaterialButton map;
-    private boolean switchOnOff;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -51,15 +50,11 @@ public class SettingsFragment extends Fragment
         aboutBtn = root.findViewById(R.id.button_aboutUs);
         map = root.findViewById(R.id.button_map);
 
-        loadData();
-
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b)
             {
-                saveData(b);
-
                 if(b)
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -113,9 +108,10 @@ public class SettingsFragment extends Fragment
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)
                     {
-                        FirebaseAuth.getInstance().signOut();
                         createNotificationChannel();
                         addNotification();
+                        saveData();
+                        Toast.makeText(getContext(), "Logout Berhasil", Toast.LENGTH_SHORT).show();
                         getActivity().finish();
                         startActivity(new Intent(getContext(), SplashSreenActivity.class));
                     }
@@ -171,28 +167,12 @@ public class SettingsFragment extends Fragment
         manager.notify(0, builder.build());
     }
 
-    public void saveData(boolean selected)
+    public void saveData()
     {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SWITCH1, selected);
+        editor.putInt(SAVE_ID, 0);
         editor.commit();
     }
 
-    public void loadData()
-    {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
-        switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
-        if(switchOnOff)
-        {
-            getContext().setTheme(R.style.darkTheme);
-        }
-
-        else
-        {
-            getContext().setTheme(R.style.AppTheme);
-        }
-
-        myswitch.setChecked(switchOnOff);
-    }
 }

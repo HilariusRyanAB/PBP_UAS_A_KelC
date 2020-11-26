@@ -219,6 +219,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             enableLocationComponent(style);
                             initLayers(style);
                             destinationMarker = mapboxMap.addMarker(new MarkerOptions().position(new LatLng(-7.7805141,110.4146317)));
+                            origin = Point.fromLngLat(109.41, -7,580);
                             destination = Point.fromLngLat(110.4146317,-7.7805141);
                             startNavBtn.setEnabled(true);
                         }

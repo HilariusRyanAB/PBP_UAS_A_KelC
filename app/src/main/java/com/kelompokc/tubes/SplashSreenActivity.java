@@ -22,7 +22,7 @@ public class SplashSreenActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        sharedPreferences  = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
+        sharedPreferences  = getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
 
         if(sharedPreferences!=null)
         {

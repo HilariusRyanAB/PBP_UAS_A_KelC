@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 import com.kelompokc.tubes.model.Buku;
@@ -23,12 +22,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 {
     private Context context;
     private List<Buku> result;
-    private int check=0;
+    private int check = 0;
     private boolean b;
     private AdapterRecyclerViewBinding binding;
-    private FloatingActionButton add;
-    private FloatingActionButton remove;
-    private ArrayList<Buku> bukuList = new ArrayList<Buku>();
+    private List<Buku> bukuList = new ArrayList<>();
 
     public RecyclerViewAdapter(Context context, List<Buku> result)
     {
@@ -48,7 +45,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position)
     {
-        final Buku buku = result.get(position);
+        Buku buku = result.get(position);
+        System.out.println(buku.getJudul()+"\n");
         binding.setBuku(buku);
 
         if(bukuList.size()!=0)
@@ -95,6 +93,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return result.size();
     }
 
+    @Override
+    public int getItemViewType(int position)
+    {
+        return position;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         private final AdapterRecyclerViewBinding binding;
@@ -107,7 +111,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         public void onClick(View view)
         {
-            Toast.makeText(context, "You touch me?", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -123,7 +127,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    public ArrayList<Buku> getDataBuku()
+    public List<Buku> getDataBuku()
     {
         return bukuList;
     }

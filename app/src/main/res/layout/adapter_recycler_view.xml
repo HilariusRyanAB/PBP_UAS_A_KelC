@@ -23,16 +23,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp">
-                <com.google.android.material.imageview.ShapeableImageView
+                <com.github.siyamed.shapeimageview.RoundedImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    app:siRadius="2dp"
+                    app:siBorderWidth="2dp"
+                    app:siBorderColor="#000000"
+                    app:siSquare="true"
                     app:profileImage="@{buku.imgURL}">
-                </com.google.android.material.imageview.ShapeableImageView>
+                </com.github.siyamed.shapeimageview.RoundedImageView>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="29dp">
                 <LinearLayout
                     android:layout_width="match_parent"

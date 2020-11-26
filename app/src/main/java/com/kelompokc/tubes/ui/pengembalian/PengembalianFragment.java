@@ -1,5 +1,6 @@
 package com.kelompokc.tubes.ui.pengembalian;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,21 +17,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.R;
-import com.kelompokc.tubes.database.DatabaseClient;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.adapter.RecyclerViewAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.android.volley.Request.Method.GET;
 
 public class PengembalianFragment extends Fragment
 {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter pModel;
-    private ArrayList<Buku> tempList = new ListKembali().listKembali;
-    private ArrayList<Buku> tempKembali;
+    private List<Buku> tempKembali = new ArrayList<>();
     private FloatingActionButton remove;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -40,9 +51,11 @@ public class PengembalianFragment extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         remove = root.findViewById(R.id.kembali_button);
+        pModel = new RecyclerViewAdapter(getContext(), tempKembali);
 
-        //deleteBukuKembaliAll(tempList);
-        getBukuKembali();
+        recyclerView.setAdapter(pModel);
+
+        getBuku();
 
         remove.setOnClickListener(new View.OnClickListener()
         {
@@ -65,7 +78,7 @@ public class PengembalianFragment extends Fragment
         return root;
     }
 
-    private void showDialog(CharSequence[] a, int size, final ArrayList<Buku> tempBuku)
+    private void showDialog(CharSequence[] a, int size, final List<Buku> tempBuku)
     {
         String temp = "";
         for(int i = 0; i<size;i++)
@@ -87,7 +100,7 @@ public class PengembalianFragment extends Fragment
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i)
                 {
-                    updateStatusKembali(tempBuku);
+
                 }
             })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
@@ -111,118 +124,74 @@ public class PengembalianFragment extends Fragment
         return strings;
     }
 
-    public void addBukuKembaliAll()
+    public void getBuku()
     {
-        class addBuku extends AsyncTask<Void, Void, Void>
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Menampilkan data buku");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, BukuAPI.URL_SELECT
+                , null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                progressDialog.dismiss();
+                try
+                {
+                    JSONArray jsonArray = response.getJSONArray("data");
+
+                    if(!tempKembali.isEmpty())
+                        tempKembali.clear();
+
+                    for (int i = 0; i < jsonArray.length(); i++)
+                    {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        int id                  = Integer.parseInt(jsonObject.optString("id"));
+                        String judul            = jsonObject.optString("judul");
+                        String genre            = jsonObject.optString("genre");
+                        String noSeri           = jsonObject.optString("noSeri");
+                        String gambar           = jsonObject.optString("img");
+                        String status           = jsonObject.optString("status");
+
+                        gambar.replace("\\", "");
+
+                        if(status.equalsIgnoreCase("Dipinjam"))
+                        {
+                            Buku buku = new Buku(id, judul, genre, noSeri, gambar, status);
+                            tempKembali.add(buku);
+                        }
+                    }
+                    pModel.notifyDataSetChanged();
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                if(tempKembali.isEmpty())
+                {
+                    Toast.makeText(getContext(), "Tidak Ada Buku yang Dipinjam", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getContext(), response.optString("message"), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener()
         {
             @Override
-            protected Void doInBackground(Void... voids)
+            public void onErrorResponse(VolleyError error)
             {
-                for(int i = 0; i < tempList.size(); i++)
-                {
-                    DatabaseClient.getInstance(getContext()).getDatabase().bukuDAO().insert(tempList.get(i));
-                }
-                return null;
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
             }
+        });
 
-            @Override
-            protected void onPostExecute(Void aVoid)
-            {
-                super.onPostExecute(aVoid);
-            }
-        }
-        addBuku get = new addBuku();
-        get.execute();
-    }
-
-    public void getBukuKembali()
-    {
-        class getBuku extends AsyncTask<Void, Void, List<Buku>>
-        {
-            @Override
-            protected List<Buku> doInBackground(Void... voids)
-            {
-                List<Buku> bukuList = DatabaseClient
-                        .getInstance(getContext())
-                        .getDatabase()
-                        .bukuDAO()
-                        .getAll("dipinjam");
-                return bukuList;
-            }
-
-            @Override
-            protected void onPostExecute(List<Buku> tempBuku)
-            {
-                super.onPostExecute(tempBuku);
-                pModel = new RecyclerViewAdapter(getContext(), tempBuku);
-                recyclerView.setAdapter(pModel);
-                if (tempBuku.isEmpty())
-                {
-                    addBukuKembaliAll();
-                    getBukuKembali();
-                }
-            }
-        }
-        getBuku get = new getBuku();
-        get.execute();
-    }
-
-    public void deleteBukuKembaliAll(final ArrayList<Buku> tempList)
-    {
-        class deleteBuku extends AsyncTask<Void, Void, Void>
-        {
-            @Override
-            protected Void doInBackground(Void... voids)
-            {
-                for(int i = 0; i < tempList.size(); i++)
-                {
-                    DatabaseClient
-                            .getInstance(getContext())
-                            .getDatabase()
-                            .bukuDAO()
-                            .delete(tempList.get(i).getNoSeri());
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid)
-            {
-                super.onPostExecute(aVoid);
-                Toast.makeText(getContext(), "Buku Berhasil Dihapus Semua", Toast.LENGTH_SHORT).show();
-            }
-        }
-        deleteBuku buku = new deleteBuku();
-        buku.execute();
-    }
-
-    public void updateStatusKembali(final ArrayList<Buku> tempList)
-    {
-        class updateStatusKembali extends AsyncTask<Void, Void, Void>
-        {
-            @Override
-            protected Void doInBackground(Void... voids)
-            {
-                for (int i = 0; i < tempList.size(); i++)
-                {
-                    DatabaseClient
-                            .getInstance(getContext())
-                            .getDatabase()
-                            .bukuDAO()
-                            .updateStatus("tersedia", tempList.get(i).getNoSeri());
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid)
-            {
-                super.onPostExecute(aVoid);
-                Toast.makeText(getContext(), "Buku Berhasil Dikembalikan", Toast.LENGTH_SHORT).show();
-                getBukuKembali();
-            }
-        }
-        updateStatusKembali status = new updateStatusKembali();
-        status.execute();
+        queue.add(stringRequest);
     }
 }

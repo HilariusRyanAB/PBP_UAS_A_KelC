@@ -1,9 +1,10 @@
 package com.kelompokc.tubes.ui.peminjaman;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,17 +17,33 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.kelompokc.tubes.database.DatabaseClient;
+import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.QRBarcodeActivity;
 import com.kelompokc.tubes.adapter.RecyclerViewAdapter;
 import com.kelompokc.tubes.R;
+import com.kelompokc.tubes.ui.pengembalian.ListKembali;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.android.volley.Request.Method.GET;
+import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 
 public class PeminjamanFragment extends Fragment
 {
@@ -34,8 +51,7 @@ public class PeminjamanFragment extends Fragment
     private RecyclerViewAdapter pModel;
     private FloatingActionButton add;
     private ImageView scan;
-    private ArrayList<Buku> tempPinjam = new ArrayList<>();
-    private ArrayList<Buku> tempList = new ListPinjam().listPinjam;
+    private List<Buku> tempPinjam = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -45,15 +61,18 @@ public class PeminjamanFragment extends Fragment
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         scan = root.findViewById(R.id.button_qr);
         add = root.findViewById(R.id.button_pinjam);
+        pModel = new RecyclerViewAdapter(getContext(), tempPinjam);
 
-        //deleteBukuPinjamAll(tempList);
-        getBukuPinjam();
+        recyclerView.setAdapter(pModel);
+
+        getBuku();
 
         add.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                tempPinjam.clear();
                 tempPinjam = pModel.getDataBuku();
                 if (tempPinjam.isEmpty())
                 {
@@ -63,6 +82,10 @@ public class PeminjamanFragment extends Fragment
                 {
                     CharSequence[] title = getStringArray(tempPinjam);
                     getDialog(title, tempPinjam.size(), tempPinjam);
+                    for(int i = 0; i < tempPinjam.size(); i++)
+                    {
+                        editBuku(tempPinjam.get(i));
+                    }
                 }
             }
         });
@@ -79,7 +102,7 @@ public class PeminjamanFragment extends Fragment
         return root;
     }
 
-    private void getDialog(CharSequence[] a, int size, final ArrayList<Buku> tempBuku)
+    private void getDialog(CharSequence[] a, int size, final List<Buku> tempBuku)
     {
         String temp = "";
 
@@ -100,7 +123,7 @@ public class PeminjamanFragment extends Fragment
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i)
                 {
-                    updateStatusPinjam(tempBuku);
+
                 }
             })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
@@ -125,118 +148,175 @@ public class PeminjamanFragment extends Fragment
         return strings;
     }
 
-    public void getBukuPinjam()
+    public void tambahBuku(final String judul, final String genre, final String noSeri, final String gambar)
     {
-        class getBuku extends AsyncTask<Void, Void, List<Buku>>
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Menambahkan data buku");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_ADD, new Response.Listener<String>()
         {
             @Override
-            protected List<Buku> doInBackground(Void... voids)
+            public void onResponse(String response)
             {
-                List<Buku> bukuList = DatabaseClient
-                        .getInstance(getContext())
-                        .getDatabase()
-                        .bukuDAO()
-                        .getAll("tersedia");
-                return bukuList;
-            }
-
-            @Override
-            protected void onPostExecute(List<Buku> tempBuku)
-            {
-                super.onPostExecute(tempBuku);
-                pModel = new RecyclerViewAdapter(getContext(), tempBuku);
-                recyclerView.setAdapter(pModel);
-                if (tempBuku.isEmpty())
+                progressDialog.dismiss();
+                try
                 {
-                    addBukuPinjamAll();
-                    getBukuPinjam();
+                    JSONObject obj = new JSONObject(response);
+
+                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
                 }
             }
-        }
-        getBuku get = new getBuku();
-        get.execute();
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("judul", judul);
+                params.put("genre", genre);
+                params.put("noSeri", noSeri);
+                params.put("status", "Tersedia");
+                params.put("img", gambar);
+
+                return params;
+            }
+        };
+
+        queue.add(stringRequest);
     }
 
-    public void addBukuPinjamAll()
+    public void getBuku()
     {
-        class addBuku extends AsyncTask<Void, Void, Void>
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Menampilkan data buku");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, BukuAPI.URL_SELECT
+                , null, new Response.Listener<JSONObject>()
         {
             @Override
-            protected Void doInBackground(Void... voids)
+            public void onResponse(JSONObject response)
             {
-                for(int i = 0; i < tempList.size(); i++)
+                progressDialog.dismiss();
+                try
                 {
-                    DatabaseClient.getInstance(getContext()).getDatabase().bukuDAO().insert(tempList.get(i));
-                }
-                return null;
-            }
+                    JSONArray jsonArray = response.getJSONArray("data");
 
-            @Override
-            protected void onPostExecute(Void aVoid)
-            {
-                super.onPostExecute(aVoid);
+                    if(!tempPinjam.isEmpty())
+                        tempPinjam.clear();
+
+                    for (int i = 0; i < jsonArray.length(); i++)
+                    {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        int id                  = Integer.parseInt(jsonObject.optString("id"));
+                        String judul            = jsonObject.optString("judul");
+                        String genre            = jsonObject.optString("genre");
+                        String noSeri           = jsonObject.optString("noSeri");
+                        String gambar           = jsonObject.optString("img");
+                        String status           = jsonObject.optString("status");
+
+                        gambar.replace("\\", "");
+
+                        if(status.equalsIgnoreCase("Tersedia"))
+                        {
+                            Buku buku = new Buku(id, judul, genre, noSeri, gambar, status);
+                            tempPinjam.add(buku);
+                        }
+                    }
+                    pModel.notifyDataSetChanged();
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getContext(), response.optString("message"), Toast.LENGTH_SHORT).show();
             }
-        }
-        addBuku get = new addBuku();
-        get.execute();
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(stringRequest);
     }
 
-    public void deleteBukuPinjamAll(final ArrayList<Buku> tempList)
+    public void editBuku(Buku buku)
     {
-        class deleteBuku extends AsyncTask<Void, Void, Void>
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Mengubah data buku");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        StringRequest  stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATE + buku.getId(),
+                new Response.Listener<String>()
         {
             @Override
-            protected Void doInBackground(Void... voids)
+            public void onResponse(String response)
             {
-                for(int i = 0; i < tempList.size(); i++)
+                progressDialog.dismiss();
+                try
                 {
-                    DatabaseClient
-                            .getInstance(getContext())
-                            .getDatabase()
-                            .bukuDAO()
-                            .delete(tempList.get(i).getNoSeri());
+                    JSONObject obj = new JSONObject(response);
+                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                 }
-                return null;
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
             }
-
-            @Override
-            protected void onPostExecute(Void aVoid)
-            {
-                super.onPostExecute(aVoid);
-                Toast.makeText(getContext(), "Buku Berhasil Dihapus Semua", Toast.LENGTH_SHORT).show();
-            }
-        }
-        deleteBuku buku = new deleteBuku();
-        buku.execute();
-    }
-
-    public void updateStatusPinjam(final ArrayList<Buku> tempList)
-    {
-        class updateStatusPinjam extends AsyncTask<Void, Void, Void>
+        }, new Response.ErrorListener()
         {
             @Override
-            protected Void doInBackground(Void... voids)
+            public void onErrorResponse(VolleyError error)
             {
-                for (int i = 0; i < tempList.size(); i++)
-                {
-                    DatabaseClient
-                            .getInstance(getContext())
-                            .getDatabase()
-                            .bukuDAO()
-                            .updateStatus("dipinjam", tempList.get(i).getNoSeri());
-                }
-                return null;
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println(error.getMessage());
             }
-
+        })
+        {
             @Override
-            protected void onPostExecute(Void aVoid)
+            protected Map<String, String> getParams()
             {
-                super.onPostExecute(aVoid);
-                Toast.makeText(getContext(), "Buku Berhasil Dipinjam", Toast.LENGTH_SHORT).show();
-                getBukuPinjam();
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("status", "Dipinjam");
+
+                return params;
             }
-        }
-        updateStatusPinjam status = new updateStatusPinjam();
-        status.execute();
+        };
+
+        queue.add(stringRequest);
     }
 }

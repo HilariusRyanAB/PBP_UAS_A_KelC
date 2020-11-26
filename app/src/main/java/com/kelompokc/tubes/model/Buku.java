@@ -3,34 +3,25 @@ package com.kelompokc.tubes.model;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
 
-@Entity
 public class Buku implements Serializable
 {
-    @PrimaryKey(autoGenerate = true)
     private int id;
+    private String judul, genre, noSeri, imgURL, status;
 
-    @ColumnInfo(name = "judul")
-    private String judul;
-
-    @ColumnInfo(name = "genre")
-    private String genre;
-
-    @ColumnInfo(name = "no_seri")
-    private String noSeri;
-
-    @ColumnInfo(name = "img_url")
-    private String imgURL;
-
-    @ColumnInfo(name = "status")
-    private String status;
+    public Buku(int id, String judul, String genre, String noSeri, String imgURL, String status)
+    {
+        this.id = id;
+        this.judul = judul;
+        this.genre = genre;
+        this.noSeri = noSeri;
+        this.imgURL = imgURL;
+        this.status = status;
+    }
 
     public Buku(String judul, String genre, String noSeri, String imgURL, String status)
     {
@@ -48,11 +39,6 @@ public class Buku implements Serializable
     public int getId()
     {
         return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
     }
 
     public String getGenre() {
@@ -76,5 +62,9 @@ public class Buku implements Serializable
     public static void loadImgURL(ImageView view, String imgURL)
     {
         Glide.with(view.getContext()).load(imgURL).into(view);
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
