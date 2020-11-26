@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +30,7 @@ import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.adapter.RecyclerViewAdapter;
+import com.kelompokc.tubes.ui.peminjaman.PeminjamanFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,6 +111,12 @@ public class PengembalianFragment extends Fragment
                     {
                         editBuku(tempKembali.get(j));
                     }
+                    Fragment fragment = new PengembalianFragment();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                 }
             })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
