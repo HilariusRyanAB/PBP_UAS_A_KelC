@@ -81,11 +81,7 @@ public class PeminjamanFragment extends Fragment
                 else
                 {
                     CharSequence[] title = getStringArray(tempPinjam);
-                    getDialog(title, tempPinjam.size(), tempPinjam);
-                    for(int i = 0; i < tempPinjam.size(); i++)
-                    {
-                        editBuku(tempPinjam.get(i));
-                    }
+                    getDialog(title, tempPinjam.size());
                 }
             }
         });
@@ -102,7 +98,7 @@ public class PeminjamanFragment extends Fragment
         return root;
     }
 
-    private void getDialog(CharSequence[] a, int size, final List<Buku> tempBuku)
+    private void getDialog(CharSequence[] a, int size)
     {
         String temp = "";
 
@@ -123,7 +119,10 @@ public class PeminjamanFragment extends Fragment
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i)
                 {
-
+                    for(int j = 0; j < size; j++)
+                    {
+                        editBuku(tempPinjam.get(j));
+                    }
                 }
             })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener()

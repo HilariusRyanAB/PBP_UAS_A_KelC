@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.API.BukuAPI;
@@ -33,9 +34,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.android.volley.Request.Method.GET;
+import static com.android.volley.Request.Method.POST;
 
 public class PengembalianFragment extends Fragment
 {
@@ -100,7 +104,10 @@ public class PengembalianFragment extends Fragment
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i)
                 {
-
+                    for(int j = 0; j < size; j++)
+                    {
+                        editBuku(tempKembali.get(j));
+                    }
                 }
             })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
@@ -191,6 +198,58 @@ public class PengembalianFragment extends Fragment
                         Toast.LENGTH_SHORT).show();
             }
         });
+
+        queue.add(stringRequest);
+    }
+
+    public void editBuku(Buku buku)
+    {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Mengubah data buku");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATE + buku.getId(),
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        progressDialog.dismiss();
+                        try
+                        {
+                            JSONObject obj = new JSONObject(response);
+                            Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println(error.getMessage());
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("status", "Tersedia");
+
+                return params;
+            }
+        };
 
         queue.add(stringRequest);
     }
