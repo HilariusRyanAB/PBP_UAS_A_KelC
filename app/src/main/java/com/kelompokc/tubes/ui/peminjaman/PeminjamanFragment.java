@@ -1,9 +1,11 @@
 package com.kelompokc.tubes.ui.peminjaman;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.API.BukuAPI;
+import com.kelompokc.tubes.API.PinjamAPI;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.QRBarcodeActivity;
 import com.kelompokc.tubes.adapter.RecyclerViewAdapter;
@@ -55,6 +58,8 @@ public class PeminjamanFragment extends Fragment
     private FloatingActionButton add;
     private ImageView scan;
     private List<Buku> tempPinjam = new ArrayList<>();
+    private int idUser;
+    private SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -65,6 +70,10 @@ public class PeminjamanFragment extends Fragment
         scan = root.findViewById(R.id.button_qr);
         add = root.findViewById(R.id.button_pinjam);
         pModel = new RecyclerViewAdapter(getContext(), tempPinjam);
+
+        sharedPreferences  = getContext().getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
+
+        idUser = sharedPreferences.getInt("idUser", 0);
 
         recyclerView.setAdapter(pModel);
 
@@ -122,9 +131,10 @@ public class PeminjamanFragment extends Fragment
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i)
                 {
-                    for(int j = 0; j < size; j++)
+                    for(int j = 0; j < tempPinjam.size(); j++)
                     {
-                        editBuku(tempPinjam.get(j));
+                        tambahTransaksiPinjam(idUser, tempPinjam.get(j).getId());
+                        editBuku(tempPinjam.get(j).getId());
                     }
                     Fragment fragment = new PeminjamanFragment();
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -276,7 +286,7 @@ public class PeminjamanFragment extends Fragment
         queue.add(stringRequest);
     }
 
-    public void editBuku(Buku buku)
+    public void editBuku(int idBuku)
     {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -287,7 +297,7 @@ public class PeminjamanFragment extends Fragment
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        StringRequest  stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATE + buku.getId(),
+        StringRequest  stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATE + idBuku,
                 new Response.Listener<String>()
         {
             @Override
@@ -320,6 +330,58 @@ public class PeminjamanFragment extends Fragment
             {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("status", "Dipinjam");
+
+                return params;
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+    public void tambahTransaksiPinjam(final int idUser, final int idBuku)
+    {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Menambahkan data buku");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(POST, PinjamAPI.URL_ADD, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                progressDialog.dismiss();
+                try
+                {
+                    JSONObject obj = new JSONObject(response);
+
+                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("idUser", String.valueOf(idUser));
+                params.put("idBuku", String.valueOf(idBuku));
 
                 return params;
             }

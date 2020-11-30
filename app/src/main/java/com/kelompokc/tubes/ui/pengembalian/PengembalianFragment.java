@@ -1,12 +1,15 @@
 package com.kelompokc.tubes.ui.pengembalian;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.API.BukuAPI;
+import com.kelompokc.tubes.API.PinjamAPI;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.adapter.RecyclerViewAdapter;
@@ -50,6 +54,10 @@ public class PengembalianFragment extends Fragment
     private RecyclerViewAdapter pModel;
     private List<Buku> tempKembali = new ArrayList<>();
     private FloatingActionButton remove;
+    private int index;
+    private Buku buku;
+    private int idUser;
+    private SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -62,7 +70,11 @@ public class PengembalianFragment extends Fragment
 
         recyclerView.setAdapter(pModel);
 
-        getBuku();
+        sharedPreferences  = getContext().getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
+
+        idUser = sharedPreferences.getInt("idUser", 0);
+
+        getTransaksiPinjam(idUser);
 
         remove.setOnClickListener(new View.OnClickListener()
         {
@@ -140,48 +152,30 @@ public class PengembalianFragment extends Fragment
         return strings;
     }
 
-    public void getBuku()
+    public void getBuku(int idBuku)
     {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("loading....");
-        progressDialog.setTitle("Menampilkan data buku");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
-
-        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, BukuAPI.URL_SELECT
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, BukuAPI.URL_GET_SELECTED + idBuku
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response)
             {
-                progressDialog.dismiss();
                 try
                 {
-                    JSONArray jsonArray = response.getJSONArray("data");
+                    JSONObject jsonObject = response.getJSONObject("data");
 
-                    if(!tempKembali.isEmpty())
-                        tempKembali.clear();
+                    int id                  = Integer.parseInt(jsonObject.optString("id"));
+                    String judul            = jsonObject.optString("judul");
+                    String genre            = jsonObject.optString("genre");
+                    String noSeri           = jsonObject.optString("noSeri");
+                    String gambar           = jsonObject.optString("img");
+                    String status           = jsonObject.optString("status");
 
-                    for (int i = 0; i < jsonArray.length(); i++)
-                    {
-                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                        int id                  = Integer.parseInt(jsonObject.optString("id"));
-                        String judul            = jsonObject.optString("judul");
-                        String genre            = jsonObject.optString("genre");
-                        String noSeri           = jsonObject.optString("noSeri");
-                        String gambar           = jsonObject.optString("img");
-                        String status           = jsonObject.optString("status");
+                    gambar.replace("\\", "");
+                    buku = new Buku(id, judul, genre, noSeri, gambar, status);
+                    tempKembali.add(buku);
 
-                        gambar.replace("\\", "");
-
-                        if(status.equalsIgnoreCase("Dipinjam"))
-                        {
-                            Buku buku = new Buku(id, judul, genre, noSeri, gambar, status);
-                            tempKembali.add(buku);
-                        }
-                    }
                     pModel.notifyDataSetChanged();
                 }
                 catch (JSONException e)
@@ -202,7 +196,6 @@ public class PengembalianFragment extends Fragment
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                progressDialog.dismiss();
                 Toast.makeText(getContext(), error.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
@@ -259,6 +252,60 @@ public class PengembalianFragment extends Fragment
                 return params;
             }
         };
+
+        queue.add(stringRequest);
+    }
+
+    public void getTransaksiPinjam(int idUser)
+    {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("loading....");
+        progressDialog.setTitle("Menampilkan data buku yang dipinjam");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, PinjamAPI.URL_GET
+                , null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                progressDialog.dismiss();
+                try
+                {
+                    JSONArray jsonArray = response.getJSONArray("data");
+
+                    for (int i = 0; i < jsonArray.length(); i++)
+                    {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        int idUserDB  = Integer.parseInt(jsonObject.optString("idUser"));
+                        if(idUserDB == idUser)
+                        {
+                            int idBukuDB  = Integer.parseInt(jsonObject.optString("idBuku"));
+                            getBuku(idBukuDB);
+                        }
+
+                    }
+                    pModel.notifyDataSetChanged();
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                    Toast.makeText(getContext(), response.optString("message"), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
         queue.add(stringRequest);
     }

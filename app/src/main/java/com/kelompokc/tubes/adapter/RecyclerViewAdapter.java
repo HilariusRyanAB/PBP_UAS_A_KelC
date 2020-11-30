@@ -75,7 +75,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
                 if(check<=2)
                 {
-                    setAddOrRemove(holder.getAdapterPosition(), b);
+                    setAddOrRemove(position, b, result);
                 }
                 else
                 {
@@ -115,7 +115,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    private void setAddOrRemove(int index, boolean b)
+    private void setAddOrRemove(int index, boolean b, List<Buku> result)
     {
         if(b)
         {
