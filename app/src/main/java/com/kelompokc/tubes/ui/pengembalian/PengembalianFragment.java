@@ -70,6 +70,8 @@ public class PengembalianFragment extends Fragment
 
         recyclerView.setAdapter(pModel);
 
+        tempKembali.clear();
+
         sharedPreferences  = getContext().getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
 
         idUser = sharedPreferences.getInt("idUser", 0);
