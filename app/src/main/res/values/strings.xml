@@ -27,7 +27,7 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="versi_app">Versi App</string>
-    <string name="versi">Versi 1.0.0</string>
+    <string name="versi">Versi 2.0.0</string>
     <string name="logout">Logout</string>
     <string name="about_us">About Us</string>
     <string name="exit">Exit</string>
@@ -47,4 +47,12 @@
     <string name="jadwal">Jadwal :</string>
     <string name="hari_jam">Senin - Jumat: 08:00 - 19:00 WIB\nSabtu: 08:00 - 12:00 WIB\nMinggu: 09:00 - 17:00 WIB</string>
     <string name="start_navigation">Start navigation</string>
+    <string name="signup">SignUp</string>
+    <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="nama">Nama</string>
+    <string name="npm">NPM</string>
+    <string name="fakultas">Fakultas</string>
+    <string name="pria">Pria</string>
+    <string name="wanita">Wanita</string>
+    <string name="register">Register</string>
 </resources>

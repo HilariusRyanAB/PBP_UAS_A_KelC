@@ -68,7 +68,8 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                finish();
             }
         });
 
@@ -132,7 +133,6 @@ public class LoginActivity extends AppCompatActivity
                             if(obj.getString("message").equals("Login Success"))
                             {
                                 JSONObject userObj = obj.getJSONObject("user");
-                                saveID(userObj.getInt("id"));
                                 Toast.makeText(LoginActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
                                 createNotificationChannel();
                                 addNotification();
