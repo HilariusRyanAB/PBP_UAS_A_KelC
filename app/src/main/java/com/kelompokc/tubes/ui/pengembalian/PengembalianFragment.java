@@ -227,7 +227,7 @@ public class PengembalianFragment extends Fragment
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATE + buku.getId(),
+        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATEST + buku.getId(),
                 new Response.Listener<String>()
                 {
                     @Override
