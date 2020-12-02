@@ -58,6 +58,7 @@ public class PengembalianFragment extends Fragment
     private Buku buku;
     private int idUser;
     private SharedPreferences sharedPreferences;
+    private String message;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -77,6 +78,15 @@ public class PengembalianFragment extends Fragment
         idUser = sharedPreferences.getInt("idUser", 0);
 
         getTransaksiPinjam(idUser);
+
+        if(tempKembali.isEmpty())
+        {
+            Toast.makeText(getContext(), "Tidak Ada Buku yang Dipinjam", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
 
         remove.setOnClickListener(new View.OnClickListener()
         {
@@ -291,12 +301,12 @@ public class PengembalianFragment extends Fragment
 
                     }
                     pModel.notifyDataSetChanged();
+                    message = response.getString("message");
                 }
                 catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
-                    Toast.makeText(getContext(), response.optString("message"), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener()
         {
@@ -304,8 +314,7 @@ public class PengembalianFragment extends Fragment
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

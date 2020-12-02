@@ -358,7 +358,7 @@ public class PeminjamanFragment extends Fragment
                 try
                 {
                     JSONObject obj = new JSONObject(response);
-
+                    System.out.println("1");
                     Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                 }
                 catch (JSONException e)

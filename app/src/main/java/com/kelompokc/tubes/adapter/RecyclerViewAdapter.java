@@ -46,7 +46,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position)
     {
         Buku buku = result.get(position);
-        System.out.println(buku.getJudul()+"\n");
         binding.setBuku(buku);
 
         if(bukuList.size()!=0)
