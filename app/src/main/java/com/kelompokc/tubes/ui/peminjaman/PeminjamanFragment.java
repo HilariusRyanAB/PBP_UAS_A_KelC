@@ -297,7 +297,7 @@ public class PeminjamanFragment extends Fragment
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
-        StringRequest  stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATE + idBuku,
+        StringRequest  stringRequest = new StringRequest(PUT, BukuAPI.URL_UPDATE + idBuku,
                 new Response.Listener<String>()
         {
             @Override
