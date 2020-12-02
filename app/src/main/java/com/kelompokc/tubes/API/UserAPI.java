@@ -2,7 +2,7 @@ package com.kelompokc.tubes.API;
 
 public class UserAPI
 {
-    public static final String ROOT_URL = "https://webapipbp.000webhostapp.com/";
+    public static final String ROOT_URL = "http://perpustakaan.apitubespbp.xyz/ ";
     public static final String ROOT_API = ROOT_URL + "api/";
 
     public static final String URL_LOGIN = ROOT_API + "login";
