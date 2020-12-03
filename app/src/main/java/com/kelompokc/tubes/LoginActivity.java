@@ -122,35 +122,31 @@ public class LoginActivity extends AppCompatActivity
         progressDialog.show();
 
         StringRequest stringRequest = new StringRequest(POST, UserAPI.URL_LOGIN, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                progressDialog.dismiss();
+                try
                 {
-                    @Override
-                    public void onResponse(String response)
+                    JSONObject obj = new JSONObject(response);
+                    Toast.makeText(LoginActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    if(obj.getString("message").equals("Login Success"))
                     {
-                        progressDialog.dismiss();
-                        try
-                        {
-                            JSONObject obj = new JSONObject(response);
-                            if(obj.getString("message").equals("Login Success"))
-                            {
-                                JSONObject userObj = obj.getJSONObject("user");
-                                Toast.makeText(LoginActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
-                                createNotificationChannel();
-                                addNotification();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            }
-                            else
-                            {
-                                Toast.makeText(getApplicationContext(), "Failed To Login", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
-                            }
-                            finish();
-                        }
-                        catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
+                        JSONObject userObj = obj.getJSONObject("user");
+                        createNotificationChannel();
+                        addNotification();
+                        saveID(userObj.getInt("id"));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                     }
-                }, new Response.ErrorListener()
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error)
