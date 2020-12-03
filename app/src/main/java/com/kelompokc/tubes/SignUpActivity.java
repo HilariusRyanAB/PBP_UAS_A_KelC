@@ -141,8 +141,6 @@ public class SignUpActivity extends AppCompatActivity
                     registerUser(txtNama.getText().toString(), txtNPM.getText().toString(),
                             txtEmail.getText().toString(), sFakultas,
                             sGender, txtPassword.getText().toString());
-                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                    finish();
                 }
             }
         });
@@ -170,6 +168,12 @@ public class SignUpActivity extends AppCompatActivity
                     JSONObject obj = new JSONObject(response);
 
                     Toast.makeText(SignUpActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+
+                    if(obj.getString("message").equalsIgnoreCase("Register Success, Please Verified Your Email"))
+                    {
+                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                        finish();
+                    }
                 }
                 catch (JSONException e)
                 {
