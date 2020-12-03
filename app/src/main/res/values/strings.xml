@@ -55,4 +55,7 @@
     <string name="pria">Pria</string>
     <string name="wanita">Wanita</string>
     <string name="register">Register</string>
+
+    <!-- Sumbang -->
+    <string name="daftar_buku_yang_disumbang">Daftar Buku yang Disumbang</string>
 </resources>

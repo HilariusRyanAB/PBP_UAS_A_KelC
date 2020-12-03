@@ -12,6 +12,11 @@
         android:title="@string/pengembalian" />
 
     <item
+        android:id="@+id/navigation_sumbang"
+        android:icon="@drawable/ic_baseline_library_books_24"
+        android:title="Sumbang" />
+
+    <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/settings" />

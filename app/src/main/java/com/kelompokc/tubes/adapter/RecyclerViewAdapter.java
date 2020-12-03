@@ -1,12 +1,16 @@
 package com.kelompokc.tubes.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +18,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 import com.kelompokc.tubes.model.Buku;
+import com.kelompokc.tubes.ui.sumbang.TambahEditSumbang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
         this.context = context;
         this.result = result;
+    }
+
+    public interface deleteItemListener {
+        void deleteItem( Boolean delete);
     }
 
     @NonNull
@@ -101,7 +110,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         private final AdapterRecyclerViewBinding binding;
-        private MaterialCardView itemCard;
+        public MaterialCardView itemCard;
         public MyViewHolder(@NonNull View itemView)
         {
             super(itemView);
