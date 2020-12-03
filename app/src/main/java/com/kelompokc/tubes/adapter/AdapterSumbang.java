@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.card.MaterialCardView;
 import com.kelompokc.tubes.API.BukuAPI;
+import com.kelompokc.tubes.API.SumbangAPI;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 import com.kelompokc.tubes.model.Buku;
@@ -186,7 +187,8 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
         progressDialog.show();
 
         //Memulai membuat permintaan request menghapus data ke jaringan
-        StringRequest stringRequest = new StringRequest(DELETE, BukuAPI.URL_DELETE + id, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(DELETE, BukuAPI.URL_DELETE + id, SumbangAPI.URL_DELETE + id,
+        new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //Disini bagian jika response jaringan berhasil tidak terdapat ganguan/error
