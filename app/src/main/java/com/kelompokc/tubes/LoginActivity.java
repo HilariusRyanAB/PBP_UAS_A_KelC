@@ -80,7 +80,20 @@ public class LoginActivity extends AppCompatActivity
             {
                 String email = emailInput.getText().toString();
                 String pass = passInput.getText().toString();
-                loginAccount(email, pass);
+                if(!emailInput.getText().toString().contains("@") || !emailInput.getText().toString().contains("."))
+                {
+                    emailInput.setError("Email Invalid");
+                    emailInput.requestFocus();
+                }
+                else if(passInput.getText().toString().length()<6)
+                {
+                    passInput.setError("Passwprd Invalid");
+                    passInput.requestFocus();
+                }
+                else
+                {
+                    loginAccount(email, pass);   
+                }
             }
         });
     }
