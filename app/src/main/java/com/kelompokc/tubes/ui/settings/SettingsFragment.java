@@ -107,6 +107,7 @@ public class SettingsFragment extends Fragment
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), ProfileActivity.class));
+                getActivity().finish();
             }
         });
 

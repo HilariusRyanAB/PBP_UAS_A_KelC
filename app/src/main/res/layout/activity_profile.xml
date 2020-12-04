@@ -9,23 +9,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="220dp"
         android:orientation="vertical"
         android:background="@color/colorPrimary">
 
         <com.github.siyamed.shapeimageview.CircularImageView
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="105dp"
             android:layout_gravity="center"
-            android:src="@drawable/logo"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="20dp"
+            android:src="@drawable/logo"/>
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:layout_gravity="center"
-            android:textColor="#fff"
-            android:id="@+id/etNama"
+            android:textColor="#FFFFFF"
+            android:hint="@string/nama"
+            android:id="@+id/txt_nama"
             android:textSize="30dp"/>
     </LinearLayout>
 
@@ -36,15 +38,15 @@
         android:layout_marginStart="60dp"
         android:background="@drawable/rounded_btn"
         android:id="@+id/backhome"
-        android:layout_marginTop="-120dp">
+        android:layout_marginTop="-125dp">
 
-        <com.github.siyamed.shapeimageview.BubbleImageView
+        <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:padding="6dp"
             android:layout_marginStart="30dp"
-            android:id="@+id/Image"
+            android:id="@+id/imageBack"
             android:layout_gravity="center_vertical"
             android:scaleType="centerCrop"/>
 
@@ -53,15 +55,22 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:text="Home"
+            android:text="@string/home"
             android:textSize="20dp"
-            android:textColor="#FFF"/>
+            android:textColor="#FFFFFF"/>
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-90dp"
+        android:layout_marginTop="-85dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -70,17 +79,18 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_nama_layout"
+                android:id="@+id/input_npm_layout"
                 app:errorEnabled="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_nama"
+                    android:id="@+id/txt_npm"
                     android:layout_width="match_parent"
+                    android:enabled="false"
                     android:layout_height="match_parent"
-                    android:hint="@string/nama"
+                    android:hint="@string/npm"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -89,7 +99,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -109,6 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/email"
+                    android:enabled="false"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -117,7 +127,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -133,7 +142,7 @@
                 android:layout_marginVertical="10dp">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/edFakultas"
+                    android:id="@+id/edtFakultas"
                     android:inputType="none"
                     android:hint="@string/fakultas"
                     android:layout_width="match_parent"
@@ -146,7 +155,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -154,25 +162,44 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Jenis Kelamin"/>
+                android:text="@string/jenis_kelamin"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
 
-            <TextView
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edgender"
-                tools:text="wadon"/>
+                android:id="@+id/rgJenisKelamin"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rbPria"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:checked="true"
+                    android:text="@string/pria"/>
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rbWanita"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/wanita"/>
+            </RadioGroup>
         </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:text="Edit"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="80dp"
-        android:background="@color/colorPrimary"
-        android:layout_marginTop="30dp"/>
+        android:layout_gravity="center"
+        android:id="@+id/edtBtn"
+        android:text="@string/edit"
+        android:textAlignment="center"
+        android:layout_marginTop="25dp"/>
 </LinearLayout>

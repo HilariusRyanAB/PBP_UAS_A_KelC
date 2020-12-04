@@ -56,4 +56,6 @@
     <string name="wanita">Wanita</string>
     <string name="register">Register</string>
     <string name="profile">PROFILE</string>
+    <string name="edit">Edit</string>
+    <string name="home">Home</string>
 </resources>
