@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
 import com.kelompokc.tubes.MainActivity;
 import com.kelompokc.tubes.MapActivity;
+import com.kelompokc.tubes.ProfileActivity;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.SplashSreenActivity;
 
@@ -40,6 +41,7 @@ public class SettingsFragment extends Fragment
     private SwitchMaterial myswitch;
     private MaterialButton aboutBtn;
     private MaterialButton map;
+    private MaterialButton profile;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -49,6 +51,7 @@ public class SettingsFragment extends Fragment
         logOutBtn = root.findViewById(R.id.button_logOut);
         aboutBtn = root.findViewById(R.id.button_aboutUs);
         map = root.findViewById(R.id.button_map);
+        profile = root.findViewById(R.id.profile);
 
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -94,6 +97,13 @@ public class SettingsFragment extends Fragment
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), MapActivity.class));
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), ProfileActivity.class));
             }
         });
 
