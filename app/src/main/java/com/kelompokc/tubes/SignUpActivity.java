@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.API.UserAPI;
@@ -35,13 +36,13 @@ import static com.android.volley.Request.Method.POST;
 
 public class SignUpActivity extends AppCompatActivity
 {
-    private AutoCompleteTextView exposedDropdownFakultas;
+    private MaterialAutoCompleteTextView exposedDropdownFakultas;
     private String[] saFakultas = new String[] {"FTI", "FBE", "FISIP", "FH", "FT"};
     private String sFakultas = "", sGender = "Pria";
     private ImageButton btnBack;
     private RadioGroup rgGender;
     private MaterialButton btnRegister;
-    private EditText txtNama, txtNPM, txtEmail, txtPassword;
+    private TextInputEditText txtNama, txtNPM, txtEmail, txtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

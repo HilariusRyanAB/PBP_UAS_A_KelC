@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity
                 }
                 else
                 {
-                    loginAccount(email, pass);   
+                    loginAccount(email, pass);
                 }
             }
         });

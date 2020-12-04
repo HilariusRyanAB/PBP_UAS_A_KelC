@@ -34,7 +34,6 @@
             android:id="@+id/myswitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="130dp"
@@ -59,17 +58,26 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:text="@string/profile"
+            android:gravity="center"
+            android:id="@+id/button_profile"
+            android:layout_marginTop="350dp"
+            android:layout_centerHorizontal="true"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
             android:text="@string/location"
             android:gravity="center"
             android:id="@+id/button_map"
-            android:layout_marginTop="380dp"
+            android:layout_marginTop="400dp"
             android:layout_centerHorizontal="true"/>
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="440dp"
+            android:layout_marginTop="450dp"
             android:gravity="center"
             android:text="@string/about_us"
             android:id="@+id/button_aboutUs"/>

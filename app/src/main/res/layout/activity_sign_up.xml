@@ -22,7 +22,7 @@
             android:background="@drawable/ic_baseline_arrow_back_24"
             android:foreground="?android:attr/selectableItemBackground"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -35,7 +35,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#141414"
         android:layout_below="@id/navbar"
         android:layout_above="@+id/footer">
 
@@ -44,7 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
-            android:backgroundTint="#141414"
             android:layout_marginHorizontal="20dp"
             app:cardElevation="6dp"
             app:cardCornerRadius="5dp">
@@ -52,7 +50,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#141414"
                 android:orientation="vertical"
                 android:layout_margin="20dp">
 
@@ -108,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp">
 
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/edFakultas"
                         android:inputType="none"
                         android:hint="@string/fakultas"
@@ -116,7 +113,7 @@
                         android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/jenis_kelamin"
@@ -129,7 +126,7 @@
                     android:id="@+id/rgJenisKelamin"
                     android:orientation="horizontal">
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:id="@+id/rbPria"
@@ -137,7 +134,7 @@
                         android:layout_marginRight="20dp"
                         android:checked="true"
                         android:text="@string/pria"/>
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:id="@+id/rbWanita"

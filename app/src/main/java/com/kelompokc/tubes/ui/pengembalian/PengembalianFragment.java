@@ -79,15 +79,6 @@ public class PengembalianFragment extends Fragment
 
         getTransaksiPinjam(idUser);
 
-        if(tempKembali.isEmpty())
-        {
-            Toast.makeText(getContext(), "Tidak Ada Buku yang Dipinjam", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        }
-
         remove.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -193,14 +184,6 @@ public class PengembalianFragment extends Fragment
                 catch (JSONException e)
                 {
                     e.printStackTrace();
-                }
-                if(tempKembali.isEmpty())
-                {
-                    Toast.makeText(getContext(), "Tidak Ada Buku yang Dipinjam", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(getContext(), response.optString("message"), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener()

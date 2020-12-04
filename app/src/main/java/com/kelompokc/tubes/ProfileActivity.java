@@ -40,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
         iduser = sharedPreferences.getInt("idUser", 0);
 
         etnama = findViewById(R.id.etNama);
-        etfakultas = findViewById(R.id.edfakultas);
+        //etfakultas = findViewById(R.id.edfakultas);
         etnpm = findViewById(R.id.etNpm);
         etemail = findViewById(R.id.etEmail);
         edgender = findViewById(R.id.edgender);

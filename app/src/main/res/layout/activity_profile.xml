@@ -7,30 +7,28 @@
     android:orientation="vertical"
     tools:context=".ProfileActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:orientation="vertical"
         android:background="@color/colorPrimary">
 
-        <ImageView
+        <com.github.siyamed.shapeimageview.CircularImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:src="@drawable/logo"
             android:layout_marginTop="30dp"/>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="#fff"
             android:id="@+id/etNama"
-            tools:text="Jenengku"
             android:textSize="30dp"/>
-
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -40,7 +38,7 @@
         android:id="@+id/backhome"
         android:layout_marginTop="-120dp">
 
-        <ImageView
+        <com.github.siyamed.shapeimageview.BubbleImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/ic_baseline_arrow_back_24"
@@ -50,7 +48,7 @@
             android:layout_gravity="center_vertical"
             android:scaleType="centerCrop"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -71,22 +69,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_nama_layout"
+                app:errorEnabled="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="NPM"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/etNpm"
-                tools:text="gedang" />
+                android:layout_height="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_nama"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/nama"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -94,22 +97,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_email_layout"
+                app:errorEnabled="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="EMAIL"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/etEmail"
-                tools:text="gedang@gmail.com" />
+                android:layout_height="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -117,18 +125,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ddFakultas"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fakultas"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edfakultas"
-                tools:text="gedang" />
+                android:layout_marginVertical="10dp">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/edFakultas"
+                    android:inputType="none"
+                    android:hint="@string/fakultas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -144,17 +158,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Jenis Kelamin"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/edgender"
                 tools:text="wadon"/>
-
-
         </LinearLayout>
     </LinearLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Edit"
@@ -162,9 +175,4 @@
         android:layout_marginEnd="80dp"
         android:background="@color/colorPrimary"
         android:layout_marginTop="30dp"/>
-
-
-
-
-
 </LinearLayout>

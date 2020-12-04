@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
 import com.kelompokc.tubes.MainActivity;
 import com.kelompokc.tubes.MapActivity;
+import com.kelompokc.tubes.ProfileActivity;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.SplashSreenActivity;
 
@@ -35,11 +36,11 @@ public class SettingsFragment extends Fragment
     private String CHANNEL_ID="Channel 1";
     public static final String SHARE_PREFS = "SharedPrefUser";
     public static final String SAVE_ID = "idUser";
+    public static final String SWITCH1 = "switch";
 
-    private MaterialButton logOutBtn;
+    private MaterialButton logOutBtn, map, aboutBtn, profileBtn;
     private SwitchMaterial myswitch;
-    private MaterialButton aboutBtn;
-    private MaterialButton map;
+    private boolean switchOnOff;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -49,12 +50,17 @@ public class SettingsFragment extends Fragment
         logOutBtn = root.findViewById(R.id.button_logOut);
         aboutBtn = root.findViewById(R.id.button_aboutUs);
         map = root.findViewById(R.id.button_map);
+        profileBtn = root.findViewById(R.id.button_profile);
+
+        loadData();
 
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b)
             {
+                saveData(b);
+
                 if(b)
                 {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -97,6 +103,13 @@ public class SettingsFragment extends Fragment
             }
         });
 
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), ProfileActivity.class));
+            }
+        });
+
         return root;
     }
 
@@ -110,10 +123,10 @@ public class SettingsFragment extends Fragment
                     {
                         createNotificationChannel();
                         addNotification();
-                        saveData();
+                        saveDataUser();
                         Toast.makeText(getContext(), "Logout Berhasil", Toast.LENGTH_SHORT).show();
-                        getActivity().finish();
                         startActivity(new Intent(getContext(), SplashSreenActivity.class));
+                        getActivity().finish();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
@@ -167,7 +180,7 @@ public class SettingsFragment extends Fragment
         manager.notify(0, builder.build());
     }
 
-    public void saveData()
+    public void saveDataUser()
     {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -175,4 +188,28 @@ public class SettingsFragment extends Fragment
         editor.commit();
     }
 
+    public void saveData(boolean selected)
+    {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(SWITCH1, selected);
+        editor.commit();
+    }
+
+    public void loadData()
+    {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARE_PREFS, getContext().MODE_PRIVATE);
+        switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
+        if(switchOnOff)
+        {
+            getContext().setTheme(R.style.darkTheme);
+        }
+
+        else
+        {
+            getContext().setTheme(R.style.AppTheme);
+        }
+
+        myswitch.setChecked(switchOnOff);
+    }
 }
