@@ -18,7 +18,7 @@ import com.kelompokc.tubes.model.Buku;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>
+public class AdapterPinjam extends RecyclerView.Adapter<AdapterPinjam.MyViewHolder>
 {
     private Context context;
     private List<Buku> result;
@@ -27,7 +27,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private AdapterRecyclerViewBinding binding;
     private List<Buku> bukuList = new ArrayList<>();
 
-    public RecyclerViewAdapter(Context context, List<Buku> result)
+    public AdapterPinjam(Context context, List<Buku> result)
     {
         this.context = context;
         this.result = result;

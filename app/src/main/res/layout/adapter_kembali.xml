@@ -4,17 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="buku"
+            name="bukuS"
             type="com.kelompokc.tubes.model.Buku" />
     </data>
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_marginBottom="3dp"
         android:id="@+id/item_buku"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:checkable="true"
-        android:focusable="true">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +27,7 @@
                     app:siBorderWidth="2dp"
                     app:siBorderColor="#000000"
                     app:siSquare="true"
-                    app:profileImage="@{buku.imgURL}">
+                    app:profileImage="@{bukuS.imgURL}">
                 </com.github.siyamed.shapeimageview.RoundedImageView>
             </LinearLayout>
             <LinearLayout
@@ -53,7 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
-                        android:text="@{buku.judul}"
+                        android:text="@{bukuS.judul}"
                         android:textSize="12dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -70,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
-                        android:text="@{buku.genre}"
+                        android:text="@{bukuS.genre}"
                         android:textSize="12dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -87,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
-                        android:text="@{buku.noSeri}"
+                        android:text="@{bukuS.noSeri}"
                         android:textSize="12dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -97,16 +94,48 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/status"
+                        android:text="@string/tanggal"
                         android:textSize="14dp"
                         android:textStyle="bold"/>
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
-                        android:text="@{buku.status}"
+                        android:id="@+id/tanggal_kembali"
                         android:textSize="12dp"/>
                 </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/ivEdit"
+                    android:layout_width="75dp"
+                    android:layout_height="50dp"
+                    android:drawableTint="#AEAEAE"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:drawableTop="@drawable/ic_baseline_edit_24"
+                    android:text="@string/edit"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/ivHapus"
+                    android:layout_width="75dp"
+                    android:layout_height="50dp"
+                    android:drawableTint="#AEAEAE"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:drawableTop="@drawable/ic_baseline_close_24"
+                    android:text="@string/edit"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

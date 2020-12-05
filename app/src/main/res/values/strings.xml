@@ -58,4 +58,13 @@
     <string name="profile">PROFILE</string>
     <string name="edit">Edit</string>
     <string name="home">Home</string>
+    <string name="hapus">Hapus</string>
+    <string name="daftar_buku_yang_disumbangkan">Daftar Buku yang Disumbangkan</string>
+    <string name="simpan">Simpan</string>
+    <string name="batal">Batal</string>
+    <string name="pilih_media">Pilih Media</string>
+    <string name="galeri">Galeri</string>
+    <string name="kamera">Kamera</string>
+    <string name="status">Status:</string>
+    <string name="tanggal">Tanggal Kembali:</string>
 </resources>

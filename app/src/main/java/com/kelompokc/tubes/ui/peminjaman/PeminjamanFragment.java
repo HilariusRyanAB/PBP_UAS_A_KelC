@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,10 +33,8 @@ import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.API.PinjamAPI;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.QRBarcodeActivity;
-import com.kelompokc.tubes.adapter.RecyclerViewAdapter;
+import com.kelompokc.tubes.adapter.AdapterPinjam;
 import com.kelompokc.tubes.R;
-import com.kelompokc.tubes.ui.pengembalian.ListKembali;
-import com.kelompokc.tubes.ui.pengembalian.PengembalianFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,12 +52,13 @@ import static com.android.volley.Request.Method.PUT;
 public class PeminjamanFragment extends Fragment
 {
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter pModel;
+    private AdapterPinjam pModel;
     private FloatingActionButton add;
     private ImageView scan;
     private List<Buku> tempPinjam = new ArrayList<>();
     private int idUser;
     private SharedPreferences sharedPreferences;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -69,7 +68,7 @@ public class PeminjamanFragment extends Fragment
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         scan = root.findViewById(R.id.button_qr);
         add = root.findViewById(R.id.button_pinjam);
-        pModel = new RecyclerViewAdapter(getContext(), tempPinjam);
+        pModel = new AdapterPinjam(getContext(), tempPinjam);
 
         sharedPreferences  = getContext().getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
 
@@ -104,6 +103,16 @@ public class PeminjamanFragment extends Fragment
             public void onClick(View view)
             {
                 startActivity(new Intent(getContext(), QRBarcodeActivity.class));
+            }
+        });
+
+        swipeRefreshLayout = root.findViewById(R.id.swipePinjam);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh()
+            {
+                tempPinjam.clear();
+                getBuku();
             }
         });
 
@@ -238,7 +247,6 @@ public class PeminjamanFragment extends Fragment
             @Override
             public void onResponse(JSONObject response)
             {
-                progressDialog.dismiss();
                 try
                 {
                     JSONArray jsonArray = response.getJSONArray("data");
@@ -265,11 +273,13 @@ public class PeminjamanFragment extends Fragment
                         }
                     }
                     pModel.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
                 catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
+                progressDialog.dismiss();
                 Toast.makeText(getContext(), response.optString("message"), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener()

@@ -4,12 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,9 +30,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.API.PinjamAPI;
 import com.kelompokc.tubes.R;
+import com.kelompokc.tubes.adapter.AdapterKembali;
 import com.kelompokc.tubes.model.Buku;
-import com.kelompokc.tubes.adapter.RecyclerViewAdapter;
-import com.kelompokc.tubes.ui.peminjaman.PeminjamanFragment;
+import com.kelompokc.tubes.model.TransaksiPinjam;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,14 +49,16 @@ import static com.android.volley.Request.Method.POST;
 public class PengembalianFragment extends Fragment
 {
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter pModel;
+    private AdapterKembali pModel;
     private List<Buku> tempKembali = new ArrayList<>();
+    private List<TransaksiPinjam> listPinjam = new ArrayList<>();
     private FloatingActionButton remove;
-    private int index;
+    private int idTransaksi;
     private Buku buku;
     private int idUser;
     private SharedPreferences sharedPreferences;
-    private String message;
+    private String tanggal;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -66,12 +66,13 @@ public class PengembalianFragment extends Fragment
         recyclerView = root.findViewById(R.id.recycler_view_pengembalian);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        remove = root.findViewById(R.id.kembali_button);
-        pModel = new RecyclerViewAdapter(getContext(), tempKembali);
+        pModel = new AdapterKembali(getContext(), tempKembali, listPinjam);
 
         recyclerView.setAdapter(pModel);
 
         tempKembali.clear();
+
+        listPinjam.clear();
 
         sharedPreferences  = getContext().getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
 
@@ -79,80 +80,19 @@ public class PengembalianFragment extends Fragment
 
         getTransaksiPinjam(idUser);
 
-        remove.setOnClickListener(new View.OnClickListener()
+        swipeRefreshLayout = root.findViewById(R.id.swipeKembali);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
             @Override
-            public void onClick(View view)
+            public void onRefresh()
             {
-                tempKembali = pModel.getDataBuku();
-                if(tempKembali.isEmpty())
-                {
-                    Toast.makeText(getContext(),"Silahkan Pilih Buku Yang Akan Dikembalikan", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    CharSequence [] title = getStringArray(tempKembali);
-                    showDialog(title, tempKembali.size(), tempKembali);
-                }
+                listPinjam.clear();
+                tempKembali.clear();
+                getTransaksiPinjam(idUser);
             }
         });
 
         return root;
-    }
-
-    private void showDialog(CharSequence[] a, int size, final List<Buku> tempBuku)
-    {
-        String temp = "";
-        for(int i = 0; i<size;i++)
-        {
-            if(i<size-1)
-            {
-                temp =temp + a[i] + "\n\n";
-            }
-            else
-            {
-                temp =temp + a[i];
-            }
-        }
-        new AlertDialog.Builder(getContext())
-            .setTitle("Buku Yang Akan Dikembalikan")
-            .setMessage(temp)
-            .setPositiveButton("Confirm", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i)
-                {
-                    for(int j = 0; j < size; j++)
-                    {
-                        editBuku(tempKembali.get(j));
-                    }
-                    Fragment fragment = new PengembalianFragment();
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }
-            })
-            .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i)
-                {
-
-                }
-            })
-            .create().show();
-    }
-
-    public static String[] getStringArray(List<Buku> input)
-    {
-        String[] strings = new String[input.size()];
-        for (int j = 0; j < input.size(); j++)
-        {
-            strings[j] = "Judul Buku: " +  input.get(j).getJudul();
-        }
-        return strings;
     }
 
     public void getBuku(int idBuku)
@@ -199,58 +139,6 @@ public class PengembalianFragment extends Fragment
         queue.add(stringRequest);
     }
 
-    public void editBuku(Buku buku)
-    {
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("loading....");
-        progressDialog.setTitle("Mengubah data buku");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
-
-        StringRequest stringRequest = new StringRequest(POST, BukuAPI.URL_UPDATEST + buku.getId(),
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        progressDialog.dismiss();
-                        try
-                        {
-                            JSONObject obj = new JSONObject(response);
-                            Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                        }
-                        catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                System.out.println(error.getMessage());
-            }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("status", "Tersedia");
-
-                return params;
-            }
-        };
-
-        queue.add(stringRequest);
-    }
-
     public void getTransaksiPinjam(int idUser)
     {
         RequestQueue queue = Volley.newRequestQueue(getContext());
@@ -271,20 +159,24 @@ public class PengembalianFragment extends Fragment
                 try
                 {
                     JSONArray jsonArray = response.getJSONArray("data");
-
-                    for (int i = 0; i < jsonArray.length(); i++)
+                    if(jsonArray.length()!=0)
                     {
-                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                        int idUserDB  = Integer.parseInt(jsonObject.optString("idUser"));
-                        if(idUserDB == idUser)
+                        for (int i = 0; i < jsonArray.length(); i++)
                         {
-                            int idBukuDB  = Integer.parseInt(jsonObject.optString("idBuku"));
-                            getBuku(idBukuDB);
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                            int id = jsonObject.getInt("id");
+                            int idUserDB  = Integer.parseInt(jsonObject.optString("idUser"));
+                            if(idUserDB == idUser)
+                            {
+                                int idBukuDB = Integer.parseInt(jsonObject.optString("idBuku"));
+                                String tanggal = jsonObject.optString("tgl_kembali");
+                                listPinjam.add(new TransaksiPinjam(id, idUserDB, idBukuDB, tanggal));
+                                getBuku(idBukuDB);
+                            }
                         }
-
+                        pModel.notifyDataSetChanged();
                     }
-                    pModel.notifyDataSetChanged();
-                    message = response.getString("message");
+                    swipeRefreshLayout.setRefreshing(false);
                 }
                 catch (JSONException e)
                 {

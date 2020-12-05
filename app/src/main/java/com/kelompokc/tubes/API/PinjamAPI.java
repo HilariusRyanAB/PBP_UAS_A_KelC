@@ -8,4 +8,5 @@ public class PinjamAPI
     public static final String URL_ADD = ROOT_API + "pinjam";
     public static final String URL_DELETE = ROOT_API + "pinjamDlt/";
     public static final String URL_GET = ROOT_API + "pinjam";
+    public static final String URL_UPDATE = ROOT_API + "pinjam/";
 }

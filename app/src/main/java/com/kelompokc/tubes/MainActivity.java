@@ -16,6 +16,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.kelompokc.tubes.ui.peminjaman.PeminjamanFragment;
 import com.kelompokc.tubes.ui.pengembalian.PengembalianFragment;
 import com.kelompokc.tubes.ui.settings.SettingsFragment;
+import com.kelompokc.tubes.ui.sumbang.SumbangFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     private Fragment peminjamanF = new PeminjamanFragment();
     private Fragment pengembalianF = new PengembalianFragment();
     private Fragment settingsF = new SettingsFragment();
+    private Fragment sumbangF = new SumbangFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,6 +65,10 @@ public class MainActivity extends AppCompatActivity
                     case R.id.navigation_pengembalian :
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.nav_host_fragment, pengembalianF).commit();
+                    break;
+                    case R.id.navigation_sumbang :
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.nav_host_fragment, sumbangF).commit();
                     break;
                     case R.id.navigation_settings :
                         getSupportFragmentManager().beginTransaction()

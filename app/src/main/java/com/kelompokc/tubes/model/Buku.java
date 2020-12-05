@@ -23,6 +23,11 @@ public class Buku implements Serializable
         this.status = status;
     }
 
+    public Buku(int id)
+    {
+        this.id = id;
+    }
+
     public Buku(String judul, String genre, String noSeri, String imgURL, String status)
     {
         this.judul = judul;
@@ -30,6 +35,13 @@ public class Buku implements Serializable
         this.noSeri = noSeri;
         this.imgURL = imgURL;
         this.status = status;
+    }
+
+    public Buku(String judul, String genre, String noSeri)
+    {
+        this.judul = judul;
+        this.genre = genre;
+        this.noSeri = noSeri;
     }
 
     public String getJudul() {
