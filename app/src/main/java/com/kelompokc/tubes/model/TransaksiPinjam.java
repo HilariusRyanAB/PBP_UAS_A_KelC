@@ -6,13 +6,15 @@ public class TransaksiPinjam implements Serializable
 {
     private int id, idUser, idBuku;
     private String tanggal;
+    private Buku buku;
 
-    public TransaksiPinjam(int id, int idUser, int idBuku, String tanggal)
+    public TransaksiPinjam(int id, int idUser, int idBuku, String tanggal, Buku buku)
     {
         this.id = id;
         this.idUser = idUser;
         this.idBuku = idBuku;
         this.tanggal = tanggal;
+        this.buku = buku;
     }
 
     public int getId() {
@@ -29,5 +31,9 @@ public class TransaksiPinjam implements Serializable
 
     public String getTanggal() {
         return tanggal;
+    }
+
+    public Buku getBuku() {
+        return buku;
     }
 }

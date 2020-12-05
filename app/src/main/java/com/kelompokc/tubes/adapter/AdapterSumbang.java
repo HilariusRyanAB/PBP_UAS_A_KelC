@@ -46,24 +46,17 @@ import static com.android.volley.Request.Method.DELETE;
 public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHolder>
 {
     private Context context;
-    private List<Buku> result;
     private int check = 0;
     private boolean b;
     private AdapterSumbangBinding binding;
     private View view;
     private List<Buku> bukuList = new ArrayList<>();
     private List<TransaksiSumbang> listSumbang = new ArrayList<>();
-    private AdapterSumbang.deleteItemListener mListener;
 
-    public AdapterSumbang(Context context, List<Buku> result, List<TransaksiSumbang> listSumbang)
+    public AdapterSumbang(Context context, List<TransaksiSumbang> listSumbang)
     {
         this.context = context;
-        this.result = result;
         this.listSumbang = listSumbang;
-    }
-
-    public interface deleteItemListener {
-        void deleteItem(Boolean delete);
     }
 
     @NonNull
@@ -77,58 +70,51 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position)
     {
-        Buku buku = result.get(position);
+        Buku buku = listSumbang.get(position).getBuku();
         TransaksiSumbang sumbang = listSumbang.get(position);
         binding.setBukuS(buku);
-
-        if(buku.getId() != sumbang.getIdBuku())
-        {
-            holder.ivEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v)
-                {
-                    TambahEditSumbang tambahEditSumbang = new TambahEditSumbang("edit", buku);
-                    loadFragment(tambahEditSumbang);
-                }
-            });
-
-            holder.ivHapus.setOnClickListener(new View.OnClickListener()
+        System.out.println(buku.getId());
+        holder.ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
             {
-                @Override
-                public void onClick(View v)
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Anda yakin ingin menghapus buku?");
-                    builder.setPositiveButton("Ya", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            deleteBuku(Integer.toString(buku.getId()));
-                            deleteTransaksiSumbang(Integer.toString(sumbang.getId()));
-                        }
-                    });
-                    builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-            });
-        }
-        else
+                TambahEditSumbang tambahEditSumbang = new TambahEditSumbang("edit", buku);
+                loadFragment(tambahEditSumbang);
+            }
+        });
+
+        holder.ivHapus.setOnClickListener(new View.OnClickListener()
         {
-            Toast.makeText(context, "Data Tidak Sinkron", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onClick(View v)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Anda yakin ingin menghapus buku?");
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        deleteBuku(Integer.toString(buku.getId()));
+                        deleteTransaksiSumbang(Integer.toString(sumbang.getId()));
+                    }
+                });
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return result.size();
+        return listSumbang.size();
     }
 
     @Override

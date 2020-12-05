@@ -52,9 +52,8 @@ public class SumbangFragment extends Fragment
     private RecyclerView recyclerView;
     private AdapterSumbang pModel;
     private FloatingActionButton addSumbang;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-    private List<Buku> tempSumbang = new ArrayList<>();
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     private List<TransaksiSumbang> listSumbang = new ArrayList<>();
     private int idUser, idBuku;
     private Buku buku;
@@ -67,7 +66,7 @@ public class SumbangFragment extends Fragment
         recyclerView = root.findViewById(R.id.recycler_view_sumbang);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        pModel = new AdapterSumbang(getContext(), tempSumbang, listSumbang);
+        pModel = new AdapterSumbang(getContext(), listSumbang);
 
         sharedPreferences  = getContext().getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
 
@@ -83,7 +82,7 @@ public class SumbangFragment extends Fragment
             saveIdBuku();
         }
 
-        tempSumbang.clear();
+        listSumbang.clear();
 
         recyclerView.setAdapter(pModel);
 
@@ -105,8 +104,7 @@ public class SumbangFragment extends Fragment
             @Override
             public void onRefresh()
             {
-                Log.i("Masuk", "Masuk");
-                tempSumbang.clear();
+                listSumbang.clear();
                 getTransaksiSumbang(idUser);
             }
         });
@@ -123,20 +121,7 @@ public class SumbangFragment extends Fragment
                 .commit();
     }
 
-
-    public static String[] getStringArray(List<Buku> input)
-    {
-        String[] strings = new String[input.size()];
-
-        for (int j = 0; j < input.size(); j++)
-        {
-            strings[j] = "Judul Buku: " + input.get(j).getJudul();
-        }
-
-        return strings;
-    }
-
-    public void getBuku(final int idBuku)
+    public void getBuku(final int idBuku, final int idTransaksi)
     {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -158,14 +143,13 @@ public class SumbangFragment extends Fragment
 
                     gambar.replace("\\", "");
                     buku = new Buku(id, judul, genre, noSeri, gambar, status);
-                    tempSumbang.add(buku);
-
-                    pModel.notifyDataSetChanged();
+                    listSumbang.add(new TransaksiSumbang(idTransaksi, idUser, buku.getId(), buku));
                 }
                 catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
+                pModel.notifyDataSetChanged();
             }
         }, new Response.ErrorListener()
         {
@@ -200,7 +184,7 @@ public class SumbangFragment extends Fragment
                 try
                 {
                     JSONArray jsonArray = response.getJSONArray("data");
-
+                    listSumbang.clear();
                     for (int i = 0; i < jsonArray.length(); i++)
                     {
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
@@ -209,18 +193,17 @@ public class SumbangFragment extends Fragment
                         if(idUserDB == idUser)
                         {
                             int idBukuDB  = Integer.parseInt(jsonObject.optString("idBuku"));
-                            listSumbang.add(new TransaksiSumbang(id, idUserDB, idBukuDB));
-                            getBuku(idBukuDB);
+                            getBuku(idBukuDB, id);
                         }
-
                     }
-                    pModel.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
                 }
                 catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
+
+                pModel.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
         }, new Response.ErrorListener()
         {

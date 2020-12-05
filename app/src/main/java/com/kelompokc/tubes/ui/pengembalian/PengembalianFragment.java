@@ -66,7 +66,7 @@ public class PengembalianFragment extends Fragment
         recyclerView = root.findViewById(R.id.recycler_view_pengembalian);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        pModel = new AdapterKembali(getContext(), tempKembali, listPinjam);
+        pModel = new AdapterKembali(getContext(), listPinjam);
 
         recyclerView.setAdapter(pModel);
 
@@ -95,7 +95,7 @@ public class PengembalianFragment extends Fragment
         return root;
     }
 
-    public void getBuku(int idBuku)
+    public void getBuku(int idBuku, int idTransaksi, String tanggal)
     {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -117,7 +117,7 @@ public class PengembalianFragment extends Fragment
 
                     gambar.replace("\\", "");
                     buku = new Buku(id, judul, genre, noSeri, gambar, status);
-                    tempKembali.add(buku);
+                    listPinjam.add(new TransaksiPinjam(idTransaksi, idUser, buku.getId(), tanggal, buku));
 
                     pModel.notifyDataSetChanged();
                 }
@@ -170,8 +170,7 @@ public class PengembalianFragment extends Fragment
                             {
                                 int idBukuDB = Integer.parseInt(jsonObject.optString("idBuku"));
                                 String tanggal = jsonObject.optString("tgl_kembali");
-                                listPinjam.add(new TransaksiPinjam(id, idUserDB, idBukuDB, tanggal));
-                                getBuku(idBukuDB);
+                                getBuku(idBukuDB, id, tanggal);
                             }
                         }
                         pModel.notifyDataSetChanged();

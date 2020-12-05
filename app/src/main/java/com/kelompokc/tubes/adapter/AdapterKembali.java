@@ -39,22 +39,17 @@ import java.util.List;
 import java.util.Map;
 
 import static com.android.volley.Request.Method.DELETE;
-import static com.android.volley.Request.Method.POST;
 import static com.android.volley.Request.Method.PUT;
 
 public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHolder>
 {
     private Context context;
-    private List<Buku> result;
-    private boolean b;
     private AdapterKembaliBinding binding;
-    private List<Buku> bukuList = new ArrayList<>();
     private List<TransaksiPinjam> listPinjam = new ArrayList<>();
 
-    public AdapterKembali(Context context, List<Buku> result, List<TransaksiPinjam> listPinjam)
+    public AdapterKembali(Context context, List<TransaksiPinjam> listPinjam)
     {
         this.context = context;
-        this.result = result;
         this.listPinjam = listPinjam;
     }
 
@@ -69,7 +64,7 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Buku buku = result.get(position);
+        Buku buku = listPinjam.get(position).getBuku();
         TransaksiPinjam pinjam = listPinjam.get(position);
         binding.setBukuS(buku);
         holder.tgl.setText(pinjam.getTanggal());
@@ -123,7 +118,7 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
     @Override
     public int getItemCount()
     {
-        return result.size();
+        return listPinjam.size();
     }
 
     @Override
@@ -150,11 +145,6 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
         {
 
         }
-    }
-
-    public List<Buku> getDataBuku()
-    {
-        return bukuList;
     }
 
     public void deleteTransaksiPinjam(int id)
