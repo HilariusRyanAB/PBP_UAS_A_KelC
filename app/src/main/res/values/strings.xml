@@ -47,7 +47,7 @@
     <string name="jadwal">Jadwal :</string>
     <string name="hari_jam">Senin - Jumat: 08:00 - 19:00 WIB\nSabtu: 08:00 - 12:00 WIB\nMinggu: 09:00 - 17:00 WIB</string>
     <string name="start_navigation">Start navigation</string>
-    <string name="signup">SignUp</string>
+    <string name="signup">Sign Up</string>
     <string name="jenis_kelamin">Jenis Kelamin</string>
     <string name="nama">Nama</string>
     <string name="npm">NPM</string>

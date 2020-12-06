@@ -72,8 +72,9 @@ public class ProfileActivity extends AppCompatActivity {
         wanita = findViewById(R.id.rbWanita);
 
         getUser();
-        backhome = findViewById(R.id.backhome);
-        backhome.setOnClickListener(new View.OnClickListener()
+
+        ibBack = findViewById(R.id.imageBack);
+        ibBack.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)

@@ -36,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity
 {
     private MaterialAutoCompleteTextView exposedDropdownFakultas;
     private String[] saFakultas = new String[] {"FTI", "FBE", "FISIP", "FH", "FT"};
-    private String sFakultas = "", sGender = "Pria";
+    private String sFakultas = "FTI", sGender = "Pria";
     private ImageButton btnBack;
     private RadioGroup rgGender;
     private MaterialButton btnRegister;
@@ -72,6 +72,7 @@ public class SignUpActivity extends AppCompatActivity
         });
 
         exposedDropdownFakultas = findViewById(R.id.edFakultas);
+        exposedDropdownFakultas.setText("FTI");
         ArrayAdapter<String> adapterFakultas = new ArrayAdapter<>(Objects.requireNonNull(this), R.layout.list_item, R.id.item_list, saFakultas);
         exposedDropdownFakultas.setAdapter(adapterFakultas);
         exposedDropdownFakultas.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -170,14 +171,14 @@ public class SignUpActivity extends AppCompatActivity
                     {
                         FancyToast.makeText(SignUpActivity.this, obj.getString("message"), FancyToast.LENGTH_SHORT,
                                 FancyToast.SUCCESS, true).show();
-                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                        finish();
                     }
                     else
                     {
                         FancyToast.makeText(SignUpActivity.this, obj.getString("message"), FancyToast.LENGTH_SHORT,
                                 FancyToast.ERROR, false).show();
                     }
+                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                    finish();
                 }
                 catch (JSONException e)
                 {
