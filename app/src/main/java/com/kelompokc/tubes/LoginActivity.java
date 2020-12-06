@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity
                 }
                 else if(passInput.getText().toString().length()<6)
                 {
-                    passInput.setError("Passwprd Invalid");
+                    passInput.setError("Password Invalid");
                     passInput.requestFocus();
                 }
                 else
