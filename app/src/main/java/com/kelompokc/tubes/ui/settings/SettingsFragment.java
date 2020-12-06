@@ -205,11 +205,13 @@ public class SettingsFragment extends Fragment
         switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
         if(switchOnOff)
         {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             getContext().setTheme(R.style.darkTheme);
         }
 
         else
         {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             getContext().setTheme(R.style.AppTheme);
         }
 

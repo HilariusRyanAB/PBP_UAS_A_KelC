@@ -26,7 +26,7 @@ public class SplashSreenActivity extends AppCompatActivity
 
         if(sharedPreferences!=null)
         {
-            aBoolean = sharedPreferences.getBoolean("switch", true);
+            aBoolean = sharedPreferences.getBoolean("switch", false);
             if(aBoolean)
             {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

@@ -54,9 +54,31 @@ public class SignUpActivityTest {
                         isDisplayed()));
         materialButton.perform(click());
 
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.btnRegister), withText("Register"),
+                        childAtPosition(
+                                allOf(withId(R.id.footer),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                2)),
+                                0),
+                        isDisplayed()));
+        materialButton2.perform(click());
+
         ViewInteraction textInputEditText = onView(
-                allOf(withId(R.id.etNama), childAtPosition(childAtPosition(withId(R.id.twNama), 0), 1), isDisplayed()));
+                allOf(withId(R.id.etNama), childAtPosition(childAtPosition(withId(R.id.twNama), 0), 0), isDisplayed()));
         textInputEditText.perform(replaceText("Hilarius"), closeSoftKeyboard());
+
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.btnRegister), withText("Register"),
+                        childAtPosition(
+                                allOf(withId(R.id.footer),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                2)),
+                                0),
+                        isDisplayed()));
+        materialButton3.perform(click());
 
         try {
             Thread.sleep(1000);
@@ -70,9 +92,20 @@ public class SignUpActivityTest {
                                 childAtPosition(
                                         withId(R.id.twNpm),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
         textInputEditText2.perform(replaceText("9780"), closeSoftKeyboard());
+
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.btnRegister), withText("Register"),
+                        childAtPosition(
+                                allOf(withId(R.id.footer),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                2)),
+                                0),
+                        isDisplayed()));
+        materialButton4.perform(click());
 
         try {
             Thread.sleep(1000);
@@ -86,9 +119,20 @@ public class SignUpActivityTest {
                                 childAtPosition(
                                         withId(R.id.twEmail),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
         textInputEditText3.perform(replaceText("pbpatmalibrary@gmail.com"), closeSoftKeyboard());
+
+        ViewInteraction materialButton5 = onView(
+                allOf(withId(R.id.btnRegister), withText("Register"),
+                        childAtPosition(
+                                allOf(withId(R.id.footer),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                2)),
+                                0),
+                        isDisplayed()));
+        materialButton5.perform(click());
 
         try {
             Thread.sleep(1000);
@@ -102,7 +146,7 @@ public class SignUpActivityTest {
                                 childAtPosition(
                                         withId(R.id.twPassword),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
         textInputEditText4.perform(replaceText("password"), closeSoftKeyboard());
 
@@ -112,7 +156,7 @@ public class SignUpActivityTest {
             e.printStackTrace();
         }
 
-        ViewInteraction materialButton2 = onView(
+        ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.btnRegister), withText("Register"),
                         childAtPosition(
                                 allOf(withId(R.id.footer),
@@ -121,7 +165,7 @@ public class SignUpActivityTest {
                                                 2)),
                                 0),
                         isDisplayed()));
-        materialButton2.perform(click());
+        materialButton6.perform(click());
 
         try {
             Thread.sleep(4000);
