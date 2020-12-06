@@ -57,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView
     private FrameLayout backhome;
     private String[] saFakultas = new String[] {"FTI", "FBE", "FISIP", "FH", "FT"};
     private String sFakultas = "", sGender = "Pria";
+    private ProfilePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,6 +76,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView
         wanita = findViewById(R.id.rbWanita);
 
         getUser();
+
+        presenter = new ProfilePresenter(this, new ProfileService());
 
         ibBack = findViewById(R.id.imageBack);
         ibBack.setOnClickListener(new View.OnClickListener()
@@ -134,17 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView
             @Override
             public void onClick(View view)
             {
-                if(etnama.getText().toString().isEmpty())
-                {
-                    etnama.setError("Nama Tidak Boleh Kosong");
-                    etnama.requestFocus();
-                }
-                else
-                {
-                    editUser(etnama.getText().toString(), sFakultas, sGender, iduser);
-                    startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
-                    finish();
-                }
+                presenter.onEditClicked();
             }
         });
     }
@@ -179,6 +172,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView
                             etnpm.setText(npm);
                             etemail.setText(email);
                             exposedDropdownFakultas.setText(Fakultas, false);
+                            sFakultas = Fakultas;
                             if(jenisKelamin.equalsIgnoreCase("Pria"))
                             {
                                 pria.setChecked(true);
@@ -303,5 +297,20 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView
     public int getId()
     {
         return iduser;
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void showEditError(String messsage) {
+        FancyToast.makeText(ProfileActivity.this, messsage, FancyToast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startProfileActivity() {
+        new ProfileUtil(this).startProfileActivity();
     }
 }

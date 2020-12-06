@@ -1,11 +1,16 @@
 package com.kelompokc.tubes.UnitTest;
 
+import com.kelompokc.tubes.model.User;
+
 public class ProfilePresenter
 {
-    private ProfileActivity activity;
+    private ProfileService service;
     private ProfileView view;
-    public ProfilePresenter(ProfileView view){
+
+    public ProfilePresenter(ProfileView view, ProfileService service)
+    {
         this.view = view;
+        this.service = service;
     }
 
     public void onEditClicked()
@@ -17,7 +22,20 @@ public class ProfilePresenter
         }
         else
         {
-            activity.editUser(view.getNama(), view.getFakultas(), view.getGender(), view.getId());
+            service.editData(view, view.getNama(), view.getFakultas(), view.getGender(), view.getId(), new ProfileCallback()
+            {
+                @Override
+                public void onSuccess(boolean value)
+                {
+                    view.startProfileActivity();
+                }
+
+                @Override
+                public void onError()
+                {
+
+                }
+            });
             return;
         }
     }

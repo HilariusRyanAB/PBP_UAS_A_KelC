@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 public class User implements Serializable
 {
-    private String id, nama, npm, jenisKelamin, fakultas, email, img_path;
+    private String nama, npm, jenisKelamin, fakultas, email, img_path;
+    private int id;
 
-    public User(String id, String nama, String npm, String jenisKelamin, String fakultas, String email, String img_path)
+    public User(int id, String nama, String npm, String jenisKelamin, String fakultas, String email, String img_path)
     {
         this.id = id;
         this.nama = nama;
@@ -27,11 +28,19 @@ public class User implements Serializable
         this.img_path = img_path;
     }
 
-    public String getId() {
+    public User(String nama, String fakultas, String jenisKelamin, int id)
+    {
+        this.id = id;
+        this.nama = nama;
+        this.jenisKelamin = jenisKelamin;
+        this.fakultas = fakultas;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
