@@ -25,7 +25,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.kelompokc.tubes.LoginActivity;
 import com.kelompokc.tubes.MainActivity;
 import com.kelompokc.tubes.MapActivity;
-import com.kelompokc.tubes.ProfileActivity;
+import com.kelompokc.tubes.UnitTest.ProfileActivity;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.SplashSreenActivity;
 import com.shashank.sony.fancytoastlib.FancyToast;
