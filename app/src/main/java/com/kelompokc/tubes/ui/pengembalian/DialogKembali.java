@@ -1,19 +1,18 @@
 package com.kelompokc.tubes.ui.pengembalian;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,6 +25,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kelompokc.tubes.API.PinjamAPI;
 import com.kelompokc.tubes.R;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,7 +78,8 @@ public class DialogKembali extends DialogFragment
             {
                 if(txtDate.getText().toString().isEmpty())
                 {
-                    Toast.makeText(getContext(), "Tanggal Harus Diisi", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getContext(), "Tanggal Harus Diisi", FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
                 }
                 else
                 {
@@ -113,7 +114,8 @@ public class DialogKembali extends DialogFragment
                         try
                         {
                             JSONObject obj = new JSONObject(response);
-                            Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(getContext(), obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS, true).show();
                         }
                         catch (JSONException e)
                         {
@@ -126,7 +128,14 @@ public class DialogKembali extends DialogFragment
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                System.out.println(error.getMessage());
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {

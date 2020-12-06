@@ -4,14 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,12 +26,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kelompokc.tubes.API.BukuAPI;
-import com.kelompokc.tubes.API.PinjamAPI;
 import com.kelompokc.tubes.API.SumbangAPI;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.adapter.AdapterSumbang;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.model.TransaksiSumbang;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,8 +102,12 @@ public class SumbangFragment extends Fragment
             @Override
             public void onRefresh()
             {
-                listSumbang.clear();
-                getTransaksiSumbang(idUser);
+                Fragment fragment = new SumbangFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -156,8 +158,14 @@ public class SumbangFragment extends Fragment
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                Toast.makeText(getContext(), error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         });
 
@@ -176,7 +184,8 @@ public class SumbangFragment extends Fragment
         progressDialog.show();
 
         final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, SumbangAPI.URL_GET
-                , null, new Response.Listener<JSONObject>() {
+                , null, new Response.Listener<JSONObject>()
+        {
             @Override
             public void onResponse(JSONObject response)
             {
@@ -201,7 +210,8 @@ public class SumbangFragment extends Fragment
                 {
                     e.printStackTrace();
                 }
-
+                FancyToast.makeText(getContext(), response.optString("message"), FancyToast.LENGTH_SHORT,
+                        FancyToast.SUCCESS, true).show();
                 pModel.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -211,7 +221,14 @@ public class SumbangFragment extends Fragment
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         });
 
@@ -242,7 +259,14 @@ public class SumbangFragment extends Fragment
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {

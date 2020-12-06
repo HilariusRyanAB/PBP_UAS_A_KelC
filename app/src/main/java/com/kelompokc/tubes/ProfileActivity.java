@@ -11,12 +11,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,7 +26,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kelompokc.tubes.API.UserAPI;
-import com.kelompokc.tubes.ui.settings.SettingsFragment;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,11 +54,12 @@ public class ProfileActivity extends AppCompatActivity {
     private String sFakultas = "", sGender = "Pria";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-                sharedPreferences  = getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
+        sharedPreferences  = getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
 
         iduser = sharedPreferences.getInt("idUser", 0);
 
@@ -132,7 +132,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
-    public void getUser(){
+    public void getUser()
+    {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         final ProgressDialog progressDialog;
@@ -178,18 +179,28 @@ public class ProfileActivity extends AppCompatActivity {
                                 wanita.setChecked(false);
                             }
 
-                            Toast.makeText(ProfileActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(ProfileActivity.this, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS, true).show();
                         }
                         catch (JSONException e)
                         {
                             e.printStackTrace();
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new Response.ErrorListener()
+        {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(VolleyError error)
+            {
                 progressDialog.dismiss();
-                Toast.makeText(ProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(ProfileActivity.this, jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         });
 
@@ -208,7 +219,8 @@ public class ProfileActivity extends AppCompatActivity {
                 try
                 {
                     JSONObject obj = new JSONObject(response);
-                    Toast.makeText(ProfileActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(ProfileActivity.this, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                            FancyToast.SUCCESS, true).show();
                 }
                 catch (JSONException e)
                 {
@@ -220,7 +232,14 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                Toast.makeText(ProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(ProfileActivity.this, jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {

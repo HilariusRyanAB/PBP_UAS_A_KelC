@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -14,6 +13,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 import com.kelompokc.tubes.model.Buku;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,8 @@ public class AdapterPinjam extends RecyclerView.Adapter<AdapterPinjam.MyViewHold
                 }
                 else
                 {
-                    Toast.makeText(context, "Maaf Maksimal 2 Setiap Transaksi", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(context, "Maksimal Pinjam 2", FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
                     holder.itemCard.setChecked(false);
                     check--;
                 }

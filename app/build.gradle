@@ -86,4 +86,7 @@ dependencies {
 
     //Volley
     implementation 'com.android.volley:volley:1.1.0'
+
+    //Fancy Toast
+    implementation 'com.github.Shashank02051997:FancyToast-Android:0.1.8'
 }

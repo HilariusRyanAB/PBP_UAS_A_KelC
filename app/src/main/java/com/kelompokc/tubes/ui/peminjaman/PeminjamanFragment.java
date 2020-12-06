@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,12 +35,16 @@ import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.QRBarcodeActivity;
 import com.kelompokc.tubes.adapter.AdapterPinjam;
 import com.kelompokc.tubes.R;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +63,10 @@ public class PeminjamanFragment extends Fragment
     private int idUser;
     private SharedPreferences sharedPreferences;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Calendar currentTime = Calendar.getInstance();
+    private Date tanggal;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private String tglKembali;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -67,6 +75,9 @@ public class PeminjamanFragment extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         scan = root.findViewById(R.id.button_qr);
+        currentTime.add(Calendar.DATE, 7);
+        tanggal = currentTime.getTime();
+        tglKembali = sdf.format(tanggal);
         add = root.findViewById(R.id.button_pinjam);
         pModel = new AdapterPinjam(getContext(), tempPinjam);
 
@@ -75,6 +86,8 @@ public class PeminjamanFragment extends Fragment
         idUser = sharedPreferences.getInt("idUser", 0);
 
         recyclerView.setAdapter(pModel);
+
+        tempPinjam.clear();
 
         getBuku();
 
@@ -87,7 +100,8 @@ public class PeminjamanFragment extends Fragment
                 tempPinjam = pModel.getDataBuku();
                 if (tempPinjam.isEmpty())
                 {
-                    Toast.makeText(getContext(), "Silahkan Pilih Buku Yang Akan Dipinjam", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getContext(), "Silahkan Pilih Buku", FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
                 }
                 else
                 {
@@ -111,8 +125,12 @@ public class PeminjamanFragment extends Fragment
             @Override
             public void onRefresh()
             {
-                tempPinjam.clear();
-                getBuku();
+                Fragment fragment = new PeminjamanFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -142,7 +160,6 @@ public class PeminjamanFragment extends Fragment
                 {
                     for(int j = 0; j < tempPinjam.size(); j++)
                     {
-                        tambahTransaksiPinjam(idUser, tempPinjam.get(j).getId());
                         editBuku(tempPinjam.get(j).getId());
                     }
                     Fragment fragment = new PeminjamanFragment();
@@ -196,7 +213,8 @@ public class PeminjamanFragment extends Fragment
                 {
                     JSONObject obj = new JSONObject(response);
 
-                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getContext(), obj.getString("message"), FancyToast.LENGTH_SHORT,
+                            FancyToast.SUCCESS, true).show();
                 }
                 catch (JSONException e)
                 {
@@ -209,7 +227,14 @@ public class PeminjamanFragment extends Fragment
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {
@@ -270,9 +295,9 @@ public class PeminjamanFragment extends Fragment
                         {
                             Buku buku = new Buku(id, judul, genre, noSeri, gambar, status);
                             tempPinjam.add(buku);
+                            pModel.notifyDataSetChanged();
                         }
                     }
-                    pModel.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
                 }
                 catch (JSONException e)
@@ -280,7 +305,8 @@ public class PeminjamanFragment extends Fragment
                     e.printStackTrace();
                 }
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), response.optString("message"), Toast.LENGTH_SHORT).show();
+                FancyToast.makeText(getContext(), response.optString("message"), FancyToast.LENGTH_SHORT,
+                        FancyToast.SUCCESS, true).show();
             }
         }, new Response.ErrorListener()
         {
@@ -288,8 +314,14 @@ public class PeminjamanFragment extends Fragment
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         });
 
@@ -317,12 +349,14 @@ public class PeminjamanFragment extends Fragment
                 try
                 {
                     JSONObject obj = new JSONObject(response);
-                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getContext(), obj.getString("message"), FancyToast.LENGTH_SHORT,
+                            FancyToast.SUCCESS, true).show();
                 }
                 catch (JSONException e)
                 {
                     e.printStackTrace();
                 }
+                tambahTransaksiPinjam(idUser, idBuku);
             }
         }, new Response.ErrorListener()
         {
@@ -330,8 +364,14 @@ public class PeminjamanFragment extends Fragment
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                System.out.println(error.getMessage());
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {
@@ -368,8 +408,8 @@ public class PeminjamanFragment extends Fragment
                 try
                 {
                     JSONObject obj = new JSONObject(response);
-                    System.out.println("1");
-                    Toast.makeText(getContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getContext(), obj.getString("message"), FancyToast.LENGTH_SHORT,
+                            FancyToast.SUCCESS, true).show();
                 }
                 catch (JSONException e)
                 {
@@ -382,7 +422,14 @@ public class PeminjamanFragment extends Fragment
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {
@@ -392,7 +439,9 @@ public class PeminjamanFragment extends Fragment
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("idUser", String.valueOf(idUser));
                 params.put("idBuku", String.valueOf(idBuku));
+                params.put("tgl_kembali", tglKembali);
 
+                params.put("Content-Type","application/x-www-form-urlencoded");
                 return params;
             }
         };

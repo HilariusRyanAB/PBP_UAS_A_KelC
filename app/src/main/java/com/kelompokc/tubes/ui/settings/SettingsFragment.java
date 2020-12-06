@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -23,13 +22,13 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.firebase.auth.FirebaseAuth;
 import com.kelompokc.tubes.LoginActivity;
 import com.kelompokc.tubes.MainActivity;
 import com.kelompokc.tubes.MapActivity;
 import com.kelompokc.tubes.ProfileActivity;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.SplashSreenActivity;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 public class SettingsFragment extends Fragment
 {
@@ -96,14 +95,16 @@ public class SettingsFragment extends Fragment
             }
         });
 
-        map.setOnClickListener(new View.OnClickListener() {
+        map.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), MapActivity.class));
             }
         });
 
-        profileBtn.setOnClickListener(new View.OnClickListener() {
+        profileBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), ProfileActivity.class));
@@ -125,7 +126,8 @@ public class SettingsFragment extends Fragment
                         createNotificationChannel();
                         addNotification();
                         saveDataUser();
-                        Toast.makeText(getContext(), "Logout Berhasil", Toast.LENGTH_SHORT).show();
+                        FancyToast.makeText(getContext(), "Log Out Success", FancyToast.LENGTH_SHORT,
+                                FancyToast.SUCCESS, true).show();
                         startActivity(new Intent(getContext(), SplashSreenActivity.class));
                         getActivity().finish();
                     }

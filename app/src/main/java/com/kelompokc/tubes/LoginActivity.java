@@ -3,7 +3,6 @@ package com.kelompokc.tubes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,14 +15,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kelompokc.tubes.API.UserAPI;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -143,15 +143,21 @@ public class LoginActivity extends AppCompatActivity
                 try
                 {
                     JSONObject obj = new JSONObject(response);
-                    Toast.makeText(LoginActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
                     if(obj.getString("message").equals("Login Success"))
                     {
                         JSONObject userObj = obj.getJSONObject("user");
+                        FancyToast.makeText(LoginActivity.this, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                FancyToast.SUCCESS, true).show();
                         createNotificationChannel();
                         addNotification();
                         saveID(userObj.getInt("id"));
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
+                    }
+                    else
+                    {
+                        FancyToast.makeText(LoginActivity.this, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                FancyToast.ERROR, false).show();
                     }
                 }
                 catch (JSONException e)
@@ -165,8 +171,14 @@ public class LoginActivity extends AppCompatActivity
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                System.out.println(error.getMessage());
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(LoginActivity.this, jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {

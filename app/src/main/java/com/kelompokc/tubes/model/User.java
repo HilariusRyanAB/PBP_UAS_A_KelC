@@ -2,11 +2,12 @@ package com.kelompokc.tubes.model;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class User implements Serializable
+{
+    private String id, nama, npm, jenisKelamin, fakultas, email, img_path;
 
-    private String id,nama,npm, jenisKelamin, fakultas, email, img_path;
-
-    public User(String id, String nama, String npm, String jenisKelamin, String fakultas, String email, String img_path) {
+    public User(String id, String nama, String npm, String jenisKelamin, String fakultas, String email, String img_path)
+    {
         this.id = id;
         this.nama = nama;
         this.npm = npm;
@@ -15,7 +16,9 @@ public class User implements Serializable {
         this.email = email;
         this.img_path = img_path;
     }
-    public User(String nama, String npm, String jenisKelamin, String fakultas, String email, String img_path) {
+
+    public User(String nama, String npm, String jenisKelamin, String fakultas, String email, String img_path)
+    {
         this.nama = nama;
         this.npm = npm;
         this.jenisKelamin = jenisKelamin;

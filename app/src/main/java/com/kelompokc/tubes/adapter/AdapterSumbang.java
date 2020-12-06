@@ -4,13 +4,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,11 +28,11 @@ import com.google.android.material.card.MaterialCardView;
 import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.API.SumbangAPI;
 import com.kelompokc.tubes.R;
-import com.kelompokc.tubes.databinding.AdapterRecyclerViewBinding;
 import com.kelompokc.tubes.databinding.AdapterSumbangBinding;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.model.TransaksiSumbang;
 import com.kelompokc.tubes.ui.sumbang.TambahEditSumbang;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +48,6 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
     private int check = 0;
     private boolean b;
     private AdapterSumbangBinding binding;
-    private View view;
     private List<Buku> bukuList = new ArrayList<>();
     private List<TransaksiSumbang> listSumbang = new ArrayList<>();
 
@@ -61,7 +59,8 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.adapter_sumbang, parent, false);
         return new MyViewHolder(binding.getRoot());
@@ -74,7 +73,8 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
         TransaksiSumbang sumbang = listSumbang.get(position);
         binding.setBukuS(buku);
         System.out.println(buku.getId());
-        holder.ivEdit.setOnClickListener(new View.OnClickListener() {
+        holder.ivEdit.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
@@ -173,7 +173,8 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
                         {
 
                             JSONObject obj = new JSONObject(response);
-                            Toast.makeText(context, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS, true).show();
 
                         }
                         catch (JSONException e)
@@ -186,8 +187,14 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
 
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(context, jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
                 Log.i("DELBUKU", "onError: " + error.getMessage());
             }
         });
@@ -207,7 +214,8 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
                         {
 
                             JSONObject obj = new JSONObject(response);
-                            Toast.makeText(context, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS, true).show();
 
                         }
                         catch (JSONException e)
@@ -220,8 +228,14 @@ public class AdapterSumbang extends RecyclerView.Adapter<AdapterSumbang.MyViewHo
         {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
 
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(context, jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         });
         queue.add(stringRequest);

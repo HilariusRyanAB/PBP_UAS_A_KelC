@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -40,12 +40,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kelompokc.tubes.API.BukuAPI;
-import com.kelompokc.tubes.API.SumbangAPI;
-import com.kelompokc.tubes.LoginActivity;
-import com.kelompokc.tubes.MainActivity;
 import com.kelompokc.tubes.R;
-import com.kelompokc.tubes.adapter.AdapterSumbang;
 import com.kelompokc.tubes.model.Buku;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +56,8 @@ import static android.app.Activity.RESULT_OK;
 import static com.android.volley.Request.Method.POST;
 import static com.android.volley.Request.Method.PUT;
 
-public class TambahEditSumbang extends Fragment {
+public class TambahEditSumbang extends Fragment
+{
     private TextInputEditText txtJudulBuku, txtGenre, txtNoSeri;
     private ImageView ivGambar;
     private Button btnSimpan, btnBatal, btnUnggah;
@@ -122,6 +120,7 @@ public class TambahEditSumbang extends Fragment {
         sharedPreferences  = getContext().getSharedPreferences("SharedPrefUser", Context.MODE_PRIVATE);
         idUser = sharedPreferences.getInt("idUser", 0);
         sharedPreference = getContext().getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
+
         if(status.equalsIgnoreCase("edit"))
         {
             txtJudulBuku.setText(buku.getJudul());
@@ -167,7 +166,7 @@ public class TambahEditSumbang extends Fragment {
                                 requestPermissions(permission,PERMISSION_CODE);
                             }
                             else
-                                {
+                            {
                                 openCamera();
                             }
                         }
@@ -187,15 +186,18 @@ public class TambahEditSumbang extends Fragment {
                         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
                         {
                             if(getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==
-                                    PackageManager.PERMISSION_DENIED){
+                                    PackageManager.PERMISSION_DENIED)
+                            {
                                 String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
                                 requestPermissions(permission,PERMISSION_CODE);
                             }
-                            else{
+                            else
+                            {
                                 openGallery();
                             }
                         }
-                        else{
+                        else
+                        {
                             openGallery();
                         }
                         alertD.dismiss();
@@ -207,15 +209,18 @@ public class TambahEditSumbang extends Fragment {
             }
         });
 
-        btnSimpan.setOnClickListener(new View.OnClickListener() {
+        btnSimpan.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 String judulBuku  = txtJudulBuku.getText().toString();
                 String genre      = txtGenre.getText().toString();
                 String noSeri     = txtNoSeri.getText().toString();
 
                 if(judulBuku.isEmpty() || genre.isEmpty() || noSeri.isEmpty())
-                    Toast.makeText(getContext(), "Data Tidak Boleh Kosong!", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(getContext(), "Data Tidak Boleh Kosong", FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
                 else
                 {
                     String gambar = "";
@@ -249,29 +254,38 @@ public class TambahEditSumbang extends Fragment {
         });
     }
 
-    private void openGallery(){
+    private void openGallery()
+    {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, 1);
     }
 
-    private void openCamera() {
+    private void openCamera()
+    {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,2);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE:{
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        switch (requestCode)
+        {
+            case PERMISSION_CODE:
+            {
                 if(grantResults.length > 0 && grantResults[0] ==
-                        PackageManager.PERMISSION_GRANTED){
+                        PackageManager.PERMISSION_GRANTED)
+                {
                     if(selected.equals("kamera"))
                         openCamera();
                     else
                         openGallery();
-                }else{
-                    Toast.makeText(getContext() ,"Permision denied",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    FancyToast.makeText(getContext(), "Permission Denied", FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
                 }
             }
         }
@@ -283,15 +297,20 @@ public class TambahEditSumbang extends Fragment {
         if (resultCode == RESULT_OK && requestCode == 1)
         {
             selectedImage = data.getData();
-            try {
+            try
+            {
                 InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
                 bitmap = BitmapFactory.decodeStream(inputStream);
-            } catch (Exception e) {
-                Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e)
+            {
+                FancyToast.makeText(getContext(), e.getMessage(), FancyToast.LENGTH_SHORT,
+                        FancyToast.ERROR, false).show();
             }
             ivGambar.setImageBitmap(bitmap);
             bitmap = getResizedBitmap(bitmap, 512);
         }
+
         else if(resultCode == RESULT_OK && requestCode == 2)
         {
             Bundle extras = data.getExtras();
@@ -301,15 +320,19 @@ public class TambahEditSumbang extends Fragment {
         }
     }
 
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize)
+    {
         int width = image.getWidth();
         int height = image.getHeight();
 
         float bitmapRatio = (float)width / (float) height;
-        if (bitmapRatio > 1) {
+        if (bitmapRatio > 1)
+        {
             width = maxSize;
             height = (int) (width / bitmapRatio);
-        } else {
+        }
+        else
+        {
             height = maxSize;
             width = (int) (height * bitmapRatio);
         }
@@ -350,7 +373,14 @@ public class TambahEditSumbang extends Fragment {
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {
@@ -371,7 +401,8 @@ public class TambahEditSumbang extends Fragment {
         queue.add(stringRequest);
     }
 
-    public void editBuku(final int id, final String judulBuku, final String genre, final String noSeri) {
+    public void editBuku(final int id, final String judulBuku, final String genre, final String noSeri)
+    {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         final ProgressDialog progressDialog;
@@ -387,19 +418,32 @@ public class TambahEditSumbang extends Fragment {
             public void onResponse(String response)
             {
                 progressDialog.dismiss();
-                try {
+                try
+                {
                     JSONObject obj = new JSONObject(response);
-                } catch (JSONException e) {
+                }
+                catch (JSONException e)
+                {
                     e.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener() {
+        }, new Response.ErrorListener()
+        {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(VolleyError error)
+            {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(getContext(), jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
-        }){
+        })
+        {
             @Override
             protected Map<String, String> getParams()
             {

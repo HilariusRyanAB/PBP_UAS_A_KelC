@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,12 +23,12 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.API.PinjamAPI;
-import com.kelompokc.tubes.API.SumbangAPI;
 import com.kelompokc.tubes.R;
 import com.kelompokc.tubes.databinding.AdapterKembaliBinding;
 import com.kelompokc.tubes.model.Buku;
 import com.kelompokc.tubes.model.TransaksiPinjam;
 import com.kelompokc.tubes.ui.pengembalian.DialogKembali;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,7 +92,8 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
                 }
                 else
                 {
-                    Toast.makeText(context, "Data Tidak Sinkron", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(context, "Data Tidak Sinkron", FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
                 }
             }
         });
@@ -109,7 +110,8 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
                 }
                 else
                 {
-                    Toast.makeText(context, "Data Tidak Sinkron", Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(context, "Data Tidak Sinkron", FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
                 }
             }
         });
@@ -161,7 +163,8 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
                 {
 
                     JSONObject obj = new JSONObject(response);
-                    Toast.makeText(context, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    FancyToast.makeText(context, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                            FancyToast.SUCCESS, true).show();
 
                 }
                 catch (JSONException e)
@@ -174,7 +177,14 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
         {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(context, jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         });
 
@@ -202,7 +212,8 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
                         try
                         {
                             JSONObject obj = new JSONObject(response);
-                            Toast.makeText(context, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            FancyToast.makeText(context, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                    FancyToast.SUCCESS, true).show();
                         }
                         catch (JSONException e)
                         {
@@ -215,8 +226,14 @@ public class AdapterKembali extends RecyclerView.Adapter<AdapterKembali.MyViewHo
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-                System.out.println(error.getMessage());
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(context, jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {

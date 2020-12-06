@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -22,8 +20,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
-import com.kelompokc.tubes.API.BukuAPI;
 import com.kelompokc.tubes.API.UserAPI;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -168,12 +166,17 @@ public class SignUpActivity extends AppCompatActivity
                 {
                     JSONObject obj = new JSONObject(response);
 
-                    Toast.makeText(SignUpActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
-
                     if(obj.getString("message").equalsIgnoreCase("Register Success, Please Verified Your Email"))
                     {
+                        FancyToast.makeText(SignUpActivity.this, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                FancyToast.SUCCESS, true).show();
                         startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                         finish();
+                    }
+                    else
+                    {
+                        FancyToast.makeText(SignUpActivity.this, obj.getString("message"), FancyToast.LENGTH_SHORT,
+                                FancyToast.ERROR, false).show();
                     }
                 }
                 catch (JSONException e)
@@ -187,7 +190,14 @@ public class SignUpActivity extends AppCompatActivity
             public void onErrorResponse(VolleyError error)
             {
                 progressDialog.dismiss();
-                Toast.makeText(SignUpActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                NetworkResponse networkResponse = error.networkResponse;
+
+                if (networkResponse != null && networkResponse.data != null)
+                {
+                    String jsonError = new String(networkResponse.data);
+                    FancyToast.makeText(SignUpActivity.this, jsonError, FancyToast.LENGTH_SHORT,
+                            FancyToast.ERROR, false).show();
+                }
             }
         })
         {
