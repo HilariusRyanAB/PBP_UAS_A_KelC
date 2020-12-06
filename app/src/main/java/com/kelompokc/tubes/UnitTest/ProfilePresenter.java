@@ -1,10 +1,11 @@
 package com.kelompokc.tubes.UnitTest;
 
 public class ProfilePresenter {
-    private ProfileActivity activity;
+    private ProfileService service;
     private ProfileView view;
-    public ProfilePresenter(ProfileView view){
+    public ProfilePresenter(ProfileView view, ProfileService service){
         this.view = view;
+        this.service = service;
     }
 
     public void onEditClicked() {
@@ -12,7 +13,7 @@ public class ProfilePresenter {
             view.showNamaError("Nama tidak boleh kosong");
             return;
         } else {
-            activity.editUser(view.getNama(), view.getFakultas(), view.getGender(), view.getId());
+            service.edit(view.getNama(), view.getFakultas(), view.getGender(), view.getId());
             return;
         }
     }

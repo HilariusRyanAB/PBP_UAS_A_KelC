@@ -11,10 +11,12 @@ import static org.mockito.Mockito.when;
 public class ProfilePresenterTest {
     @Mock
     private ProfileView view;
+    @Mock
+    private ProfileService service;
     private ProfilePresenter presenter;
     @Before
     public void setUp() throws Exception {
-        presenter = new ProfilePresenter(view);
+        presenter = new ProfilePresenter(view, service);
     }
     @Test
     public void shouldShowErrorMessageWhenNamaIsEmpty() throws Exception {
