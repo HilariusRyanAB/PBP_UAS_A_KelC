@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
     private RadioGroup rgGender;
     private MaterialRadioButton pria, wanita;
     private ImageButton ibBack;
+    private FrameLayout backhome;
     private String[] saFakultas = new String[] {"FTI", "FBE", "FISIP", "FH", "FT"};
     private String sFakultas = "", sGender = "Pria";
 
@@ -70,6 +72,16 @@ public class ProfileActivity extends AppCompatActivity {
         wanita = findViewById(R.id.rbWanita);
 
         getUser();
+        backhome = findViewById(R.id.backhome);
+        backhome.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+                finish();
+            }
+        });
 
         rgGender = findViewById(R.id.rgJenisKelamin);
         rgGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
