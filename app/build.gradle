@@ -96,4 +96,8 @@ dependencies {
     //Test
     def nav_version = "2.3.2"
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    //Mockito
+    testCompile 'org.mockito:mockito-all:1.10.19'
+//    androidTestImplementation 'androidx.test:rules:1.3.0-beta01'
 }

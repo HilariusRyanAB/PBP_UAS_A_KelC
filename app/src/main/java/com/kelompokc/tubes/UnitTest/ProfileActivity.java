@@ -1,4 +1,4 @@
-package com.kelompokc.tubes;
+package com.kelompokc.tubes.UnitTest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +27,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kelompokc.tubes.API.UserAPI;
+import com.kelompokc.tubes.MainActivity;
+import com.kelompokc.tubes.R;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.json.JSONException;
@@ -39,7 +41,8 @@ import java.util.Objects;
 import static com.android.volley.Request.Method.GET;
 import static com.android.volley.Request.Method.PUT;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements ProfileView
+{
     private TextInputEditText etnama;
     private TextView etnpm, etemail;
     public static final String SHARE_PREFS = "SharedPrefUser";
@@ -269,5 +272,36 @@ public class ProfileActivity extends AppCompatActivity {
         };
 
         queue.add(stringRequest);
+    }
+
+    @Override
+    public String getNama()
+    {
+        return etnama.getText().toString();
+    }
+
+    @Override
+    public void showNamaError(String message)
+    {
+        etnama.setError(message);
+        etnama.requestFocus();
+    }
+
+    @Override
+    public String getFakultas()
+    {
+        return sFakultas;
+    }
+
+    @Override
+    public String getGender()
+    {
+        return sGender;
+    }
+
+    @Override
+    public int getId()
+    {
+        return iduser;
     }
 }
